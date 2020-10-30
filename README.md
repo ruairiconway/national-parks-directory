@@ -6,6 +6,8 @@
 ## Brief
 Using the National Parks Service API, create a directory that uses state postal codes as search terms.
 
+- API Doc - https://www.nps.gov/subjects/developer/api-documentation.htm
+
 ## Assignment
 Your team is working on an app that will help folks plan a vacation. You've been assigned to work on one feature for the app - to display a list of national parks in an area.
 
