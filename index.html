@@ -18,11 +18,11 @@
     </header>
     <main>
         <div>
-            <form>
+            <form id="search-form">
                 <label for="search-state">Search by State</label>
-                <input type="text" name="search-state" id="search-state" onfocus="this.value=''" required>
+                <input type="text" name="search-state" id="js-search-state" maxlength="2" placeholder="NY" onfocus="this.value=''" required>
                 <label for="search-max-num">Max Results</label>
-                <input type="number" name="search-max-num" id="search-max-num" value="10" required>
+                <input type="number" name="search-max-num" id="js-search-num" value="10" required>
                 <input type="submit" value="GO">
             </form>
         </div>
