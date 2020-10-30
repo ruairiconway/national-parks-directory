@@ -1,6 +1,5 @@
 # national-parks-directory
 
-- Live - https://ruairiconway.github.io/national-parks-directory/
 - Code - https://github.com/ruairiconway/national-parks-directory
 
 ## Brief
