@@ -1,5 +1,17 @@
 'use strict';
 
+//parkData.data[i].fullName
+//parkData.data[i].url
+//parkData.data[i].description
+//parkData.data[i].addresses
+
+function displayParkList(parkData) {
+    console.log(parkData);
+    $('#park-list').removeClass('hidden').html(
+        `<p>test</p>`
+    );
+}
+
 
 function getParkList(searchStateCode, searchMaxNum) {
     var myHeaders = new Headers();
@@ -14,8 +26,8 @@ function getParkList(searchStateCode, searchMaxNum) {
     
     fetch(`https://developer.nps.gov/api/v1/parks?stateCode=${searchStateCode}&limit=${searchMaxNum}`, requestOptions)
         .then(response => response.json())
-        .then(responseJson => console.log(responseJson))
-        .catch(error => console.log('error', error));
+        .then(responseJson => displayParkList(responseJson))
+        .catch(error => console.log('error occured //', error));
 }
 
 
