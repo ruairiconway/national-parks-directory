@@ -1,25 +1,19 @@
 'use strict';
 
-//parkData.data[i].fullName
-//parkData.data[i].url
-//parkData.data[i].description
-//parkData.data[i].addresses
-
-
 function generateEmptyListString() {
+// called if displayParkList() if there are no parks to display
     let noParksFound = `<p>One or more of your search terms didn't work. Try again!</p>`;
     return noParksFound;
 }
 
-
 function generateParkListString(parkData) {
+// called if displayParkList() has parks to display, creates string for each park item
     let stateParkList = ``;
-
     for (let i = 0; i < parkData.data.length; i++) {
         stateParkList += `
         <li>
             <p>${parkData.data[i].fullName}</p>
-            <a href="${parkData.data[i].url}" target=""_blank><p>visit site</p></a>
+            <a href="${parkData.data[i].url}" target="_blank"><p>visit site</p></a>
             <p>${parkData.data[i].description}</p>
         </li>`
     }
@@ -27,8 +21,8 @@ function generateParkListString(parkData) {
     return stateParkList;
 }
 
-
 function displayParkList(parkData) {
+// if park data response contains results, display list in DOM.
     console.log(parkData);
     if (parkData.total > 0) {
         $('#park-list').removeClass('hidden').append(
@@ -44,8 +38,8 @@ function displayParkList(parkData) {
     }
 }
 
-
 function getParkList(stateCodeArray, searchMaxNum) {
+// Get /parks data from developer.nps.gov for each of the state codes submitted, then call displayParkList()
     var myHeaders = new Headers();
     myHeaders.append("X-Api-Key", myApiKey);
     myHeaders.append("Cookie", myCookie);
@@ -64,8 +58,8 @@ function getParkList(stateCodeArray, searchMaxNum) {
     }
 }
 
-
 function watchForm() {
+// On submit, pull input values, create array of state codes, and call getParkList()
     $('#search-form').submit(event => {
         event.preventDefault();
         $('#park-list').empty();
@@ -76,5 +70,5 @@ function watchForm() {
     });
 }
 
-
+// calls watchForm on load
 $(watchForm);
