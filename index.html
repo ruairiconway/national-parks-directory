@@ -18,9 +18,11 @@
     </header>
     <main>
         <div>
+            <p>Search by state using postal code</p>
+            <p>Search multiple states by seperating state postal codes with ','</p>
             <form id="search-form">
-                <label for="search-state">Search by State</label>
-                <input type="text" name="search-state" id="js-search-state" maxlength="2" placeholder="NY" onfocus="this.value=''" required>
+                <label for="search-state">State</label>
+                <input type="text" name="search-state" id="js-search-state" placeholder="i.e. NY, MA" onfocus="this.value=''" required>
                 <label for="search-max-num">Max Results</label>
                 <input type="number" name="search-max-num" id="js-search-num" value="10" required>
                 <input type="submit" value="GO">
