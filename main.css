@@ -1,3 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Staatliches&display=swap');
+
+h1 {
+    font-size: 1.75em;
+    text-align: center;
+    font-family: 'Staatliches', cursive;
+}
+
+h2 {
+    font-size: 1.5em;
+    font-family: 'Staatliches', cursive;
+}
+
+p {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
 .hidden {
     display: none;
+}
+
+body {
+    display: flex;
+    flex-flow: column;
+}
+
+header {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+}
+
+main {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    margin: 10px 0;
+    padding: 10px;
+    max-width: 550px;
+}
+
+form {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+
+    margin: 20px 0;
+}
+
+.form-item {
+    display: flex;
+    flex-flow: row;
+    justify-content: flex-start;
+    align-items: center;
+
+    margin: 2px 0;
+    padding: 2px;
+    width: 300px;
+}
+
+.form-item input {
+    font-family: 'Montserrat', sans-serif;
+    width: 100%;
+}
+
+.form-item label {
+    font-family: 'Montserrat', sans-serif;
+    width: 100px;
+}
+
+#submit-button {
+    font-family: 'Montserrat', sans-serif;
+    margin-top: 5px;
+}
+
+.park-list {
+    list-style-type: square;
+}
+
+li {
+    margin: 10px 0 40px 0;
+    padding: 5px;
+}
+
+.park-name {
+    font-size: 1.25em;
+    margin-bottom: 10px;
+}
+
+.park-url {
+    margin-bottom: 10px;
+}
+
+.park-url a {
+    text-decoration: none;
+}
+
+footer {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+
+    height: 35px;
+}
+
+footer p {
+    font-size: 10px;
 }

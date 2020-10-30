@@ -12,9 +12,9 @@ function generateParkListString(parkData) {
     for (let i = 0; i < parkData.data.length; i++) {
         stateParkList += `
         <li>
-            <p>${parkData.data[i].fullName}</p>
-            <a href="${parkData.data[i].url}" target="_blank"><p>visit site</p></a>
-            <p>${parkData.data[i].description}</p>
+            <p class="park-name">${parkData.data[i].fullName}</p>
+            <p class="park-url"><a href="${parkData.data[i].url}" target="_blank">visit NPS website</a></p>
+            <p class="park-desc">${parkData.data[i].description}</p>
         </li>`
     }
 
@@ -25,14 +25,14 @@ function displayParkList(parkData) {
 // if park data response contains results, display list in DOM.
     console.log(parkData);
     if (parkData.total > 0) {
-        $('#park-list').removeClass('hidden').append(
-            `<p>${parkData.data[0].states}</p>
-            <ul>
+        $('#js-park-list').removeClass('hidden').append(
+            `<h2>${parkData.data[0].states}</h2>
+            <ul class="park-list">
                 ${generateParkListString(parkData)}
             </ul>`
         );
     } else {
-        $('#park-list').removeClass('hidden').append(
+        $('#js-park-list').removeClass('hidden').append(
             generateEmptyListString()
         );
     }
@@ -62,7 +62,7 @@ function watchForm() {
 // On submit, pull input values, create array of state codes, and call getParkList()
     $('#search-form').submit(event => {
         event.preventDefault();
-        $('#park-list').empty();
+        $('#js-park-list').empty();
         let searchStateCode = $('#js-search-state').val();
         let searchMaxNum = $('#js-search-num').val();
         let stateCodeArray = searchStateCode.replaceAll(' ','').split(',');
