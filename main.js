@@ -1,9 +1,10 @@
 'use strict';
 
+
 function getParkList(searchStateCode, searchMaxNum) {
     var myHeaders = new Headers();
     myHeaders.append("X-Api-Key", myApiKey);
-    myHeaders.append("Cookie", "AWSALB=HSsMCw5PQ/VBAEpwO5FcpdhbU7LNODA620eOkhtSYIk0h6Qhge6apaPjS4VH2jwmo8UZINK0nQi3Uj1Zle30Kp7UMvlM6X6y6fGZiS/DGfH4oni5+n5OG3+6LBmm; AWSALBCORS=HSsMCw5PQ/VBAEpwO5FcpdhbU7LNODA620eOkhtSYIk0h6Qhge6apaPjS4VH2jwmo8UZINK0nQi3Uj1Zle30Kp7UMvlM6X6y6fGZiS/DGfH4oni5+n5OG3+6LBmm");
+    myHeaders.append("Cookie", myCookie);
     
     var requestOptions = {
         method: 'GET',
@@ -17,6 +18,7 @@ function getParkList(searchStateCode, searchMaxNum) {
         .catch(error => console.log('error', error));
 }
 
+
 function watchForm() {
     $('#search-form').submit(event => {
         event.preventDefault();
@@ -25,5 +27,6 @@ function watchForm() {
         getParkList(searchStateCode, searchMaxNum);
     });
 }
+
 
 $(watchForm);
