@@ -17,13 +17,25 @@
         <h1>National Parks Directory</h1>
     </header>
     <main>
-        
+        <div>
+            <form>
+                <label for="search-state">Search by State</label>
+                <input type="text" name="search-state" id="search-state" onfocus="this.value=''" required>
+                <label for="search-max-num">Max Results</label>
+                <input type="number" name="search-max-num" id="search-max-num" value="10" required>
+                <input type="submit" value="GO">
+            </form>
+        </div>
+        <div id="results-list">
+            <!-- GENERATE LIST HERE -->
+        </div>
     </main>
     <footer>
         <p>&#xA9; Ruairi Conway</p>
     </footer>
 
     <!-- scripts -->
+    <script src="padlock.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.js" crossorigin="anonymous"></script>
     <script src="main.js"></script>
 </body>
