@@ -2,7 +2,7 @@
 
 function generateEmptyListString() {
 // called if displayParkList() if there are no parks to display
-    let noParksFound = `<p>One or more of your search terms didn't work. Try again!</p>`;
+    let noParksFound = `<p class="error">One or more of your search terms didn't work. Try again!</p>`;
     return noParksFound;
 }
 

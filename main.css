@@ -116,3 +116,9 @@ footer {
 footer p {
     font-size: 10px;
 }
+
+.error {
+    width: 100%;
+    text-align: center;
+    color: red;
+}
