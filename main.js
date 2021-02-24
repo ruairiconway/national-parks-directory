@@ -38,20 +38,17 @@ function displayParkList(parkData) {
     }
 }
 
+const parksProxy = `https://frozen-castle-15409.herokuapp.com/parks`;
+
 function getParkList(stateCodeArray, searchMaxNum) {
 // Get /parks data from developer.nps.gov for each of the state codes submitted, then call displayParkList()
-    var myHeaders = new Headers();
-    myHeaders.append("X-Api-Key", myApiKey);
-    myHeaders.append("Cookie", myCookie);
-    
     var requestOptions = {
         method: 'GET',
-        headers: myHeaders,
         redirect: 'follow'
     };
     
     for (let i = 0; i < stateCodeArray.length; i++) {
-        fetch(`https://developer.nps.gov/api/v1/parks?stateCode=${stateCodeArray[i]}&limit=${searchMaxNum}`, requestOptions)
+        fetch(`${parksProxy}/parks?stateCode=${stateCodeArray[i]}&limit=${searchMaxNum}`, requestOptions)
             .then(response => response.json())
             .then(responseJson => displayParkList(responseJson))
             .catch(error => console.log('error occured //', error));
