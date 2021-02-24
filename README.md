@@ -1,6 +1,7 @@
 # national-parks-directory
 
 - Code - https://github.com/ruairiconway/national-parks-directory
+- Live - https://ruairiconway.github.io/national-parks-directory/
 
 ## Brief
 Using the National Parks Service API, create a directory that uses state postal codes as search terms.
