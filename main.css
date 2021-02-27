@@ -1,124 +1,44 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Staatliches&display=swap');
+/* ===== BASE ===== */
 
-h1 {
-    font-size: 1.75em;
-    text-align: center;
-    font-family: 'Staatliches', cursive;
-}
-
-h2 {
-    font-size: 1.5em;
-    font-family: 'Staatliches', cursive;
-}
-
-p {
-    margin: 0;
-    font-family: 'Montserrat', sans-serif;
-}
-
-.hidden {
-    display: none;
+* {
+    box-sizing: border-box;
 }
 
 body {
-    display: flex;
-    flex-flow: column;
+    min-height: 100vh;
+    min-height: -webkit-fill-available; /* for mobile browser sizing */
+    margin: 0;
 }
 
-header {
-    display: flex;
-    flex-flow: column;
-    justify-content: center;
-    align-items: center;
-
-    width: 100%;
+html {
+    height: -webkit-fill-available; /* for mobile browser sizing */
 }
 
-main {
-    display: flex;
-    flex-flow: column;
-    justify-content: center;
-    align-items: center;
+h1, h2, h3, h4, p {
+    margin: 0;
 }
 
-.container {
-    margin: 10px 0;
-    padding: 10px;
-    max-width: 550px;
+img {
+    object-fit: cover;
 }
 
-form {
-    display: flex;
-    flex-flow: column;
-    justify-content: center;
-    align-items: center;
+/* ===== BASE ===== */
 
-    margin: 20px 0;
+.state-dropdown {
+    text-transform: uppercase;
 }
 
-.form-item {
-    display: flex;
-    flex-flow: row;
-    justify-content: flex-start;
-    align-items: center;
-
-    margin: 2px 0;
-    padding: 2px;
-    width: 300px;
+.state-dropdown-error {
+    background: red;
 }
 
-.form-item input {
-    font-family: 'Montserrat', sans-serif;
-    width: 100%;
+.park-card {
+    margin: 50px 0;
 }
 
-.form-item label {
-    font-family: 'Montserrat', sans-serif;
-    width: 100px;
-}
 
-#submit-button {
-    font-family: 'Montserrat', sans-serif;
-    margin-top: 5px;
-}
+/* ===== HIDDEN ===== */
 
-.park-list {
-    list-style-type: square;
-}
-
-li {
-    margin: 10px 0 40px 0;
-    padding: 5px;
-}
-
-.park-name {
-    font-size: 1.25em;
-    margin-bottom: 10px;
-}
-
-.park-url {
-    margin-bottom: 10px;
-}
-
-.park-url a {
-    text-decoration: none;
-}
-
-footer {
-    display: flex;
-    flex-flow: column;
-    justify-content: center;
-    align-items: center;
-
-    height: 35px;
-}
-
-footer p {
-    font-size: 10px;
-}
-
-.error {
-    width: 100%;
-    text-align: center;
-    color: red;
+.hidden {
+    display: none;
 }
