@@ -13,6 +13,14 @@ function getRanNum(max) {
     return Math.floor(Math.random() * (max))
 }
 
+function formatPhoneNum(num) {
+    num.splice(0, 0, '(')
+    num.splice(4, 0, ')')
+    num.splice(5, 0, ' ')
+    num.splice(9, 0, ' ')
+    return num.join('')
+}
+
 
 // =========== HANDLE ===========
 
@@ -56,7 +64,7 @@ function handleCardAddress(addresses) {
                     <p>${address.line1}</p>
                     <p>${address.postalCode}, ${address.stateCode}</p>
                 </div>`
-            return addressHtml
+                return addressHtml
         }
     }
 }
@@ -77,7 +85,7 @@ function handleCardContact(contact) {
                 phoneNum.splice(i, 1)
             }
         }
-        
+        phoneNum = formatPhoneNum(phoneNum)
         return phoneNum
     }
     // contactHtml
@@ -87,6 +95,56 @@ function handleCardContact(contact) {
             <p>${phoneNum}</p>
         </div>`
     return contactHtml
+}
+
+function handleCardHours(hours) {
+    let hoursHtml = `
+        <div class="card-hours">
+            <ul class="days-list">
+                <p class="day">sun</p>
+                <p class="day">mon</p>
+                <p class="day">tue</p>
+                <p class="day">wed</p>
+                <p class="day">thu</p>
+                <p class="day">fri</p>
+                <p class="day">sat</p>
+            </ul>
+            <ul class="hours-list">
+                <p class="hours">${hours.sunday}</p>
+                <p class="hours">${hours.monday}</p>
+                <p class="hours">${hours.tuesday}</p>
+                <p class="hours">${hours.wednesday}</p>
+                <p class="hours">${hours.thursday}</p>
+                <p class="hours">${hours.friday}</p>
+                <p class="hours">${hours.saturday}</p>
+            </ul>
+        </div>`
+    return hoursHtml
+}
+
+function handleCardAlerts(parkCode) {
+    let alertStr = getAlerts(parkCode)
+    console.log(alertStr)
+}
+
+function handleCardLinks(park) {
+    // fees
+    let feesStr = ''
+    if (park.entranceFees[0].cost === '0.00') {
+        feesStr = 'free entry'
+    } else {
+        feesStr = 'fees'
+    }
+    let feesLink = `<a href="https://www.nps.gov/${park.parkCode}/planyourvisit/fees.htm" class="link">${feesStr}</a>`
+    // webcam
+
+    let linksHtml = `
+        <div class="links-wrapper">
+            <a href="${park.directionsUrl}" class="link">directions</a>
+            ${feesLink}
+            <a href="${park.url}" class="link">nps website</a>
+        </div>`
+    return linksHtml
 }
 
 
@@ -111,8 +169,11 @@ function generateParkCardHtml(park) {
         <p>${park.longitude}</p>
         <p>${park.parkCode}</p>
         ${handleCardTopics(park.topics)}
-        ${handleCardAddress(park.addresses)}
         ${handleCardContact(park.contacts)}
+        ${handleCardAddress(park.addresses)}
+        ${handleCardAlerts(park.parkCode)}
+        ${handleCardLinks(park)}
+        ${handleCardHours(park.operatingHours[0].standardHours)}
     </div>`
     return parkCardHtml
 }
@@ -144,6 +205,21 @@ function renderDirectory(state, parksData) {
 
 // =========== FETCH ===========
 const npsApiUrl = `https://frozen-castle-15409.herokuapp.com/parks`
+
+async function getAlerts(parkCode) {
+    try {
+        const alertsPromise = await fetch(`${npsApiUrl}/alerts?parkCode=${parkCode}`)
+        const alertsJson = await alertsPromise.json()
+        if (alertsJson.total > 0) {
+            console.log(alertsJson.data[0])
+        } else if (alertsJson.total === 0) {
+            return ''
+        }
+    } catch (err) {
+        alert("Could not connect to alerts.")
+        console.error(err)
+    }
+}
 
 async function getParks(state) {
     try {
