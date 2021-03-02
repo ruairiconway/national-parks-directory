@@ -5,6 +5,8 @@ const stateDropdown = document.getElementById('js-state-select')
 const submitBtn = document.getElementById('js-submit-btn')
 const noStateMsg = document.getElementById('js-no-state-message')
 const directoryWrapper = document.getElementById('js-directory-wrapper')
+let alertHtml = ''
+let webcamHtml = ''
 
 
 // =========== TOOLS ===========
@@ -29,13 +31,13 @@ function handleCardTopics(topics) {
         return ''
     } else if (topics.length === 1) { // 1 topics exist
         let topicsHtml = `
-            <div class="card-topics">
+            <div class="park-topics">
                 <p>${topics[0].name}</p>
             </div>`
         return topicsHtml
     } else if (topics.length === 2) { // 2 topics exist
         let topicsHtml = `
-            <div class="card-topics">
+            <div class="park-topics">
                 <p>${topics[0].name}</p>
                 <p>${topics[1].name}</p>
             </div>`
@@ -47,7 +49,7 @@ function handleCardTopics(topics) {
             index2 = getRanNum(topics.length)
         }
         let topicHtml = `
-            <div class="card-topics">
+            <div class="park-topics">
                 <p>${topics[index1].name}</p>
                 <p>${topics[index2].name}</p>
             </div>`
@@ -59,7 +61,7 @@ function handleCardAddress(addresses) {
     for (let address of addresses) {
         if (address.type === 'Physical') {
             let addressHtml = `
-                <div class="card-address">
+                <div class="park-address">
                     <p>${address.city}</p>
                     <p>${address.line1}</p>
                     <p>${address.postalCode}, ${address.stateCode}</p>
@@ -75,82 +77,123 @@ function handleCardContact(contact) {
     if (contact.emailAddresses.length > 0) {
         email = contact.emailAddresses[0].emailAddress // email
     } else {
-        return ''
+        email = ''
     }
     // phoneNum
+    let phoneNum
     for (let num of contact.phoneNumbers) { // phone
-        let phoneNum = num.phoneNumber.replace(/\s+/g, '').split('') // remove spaces and create an array
+        phoneNum = num.phoneNumber.replace(/\s+/g, '').split('') // remove spaces and create an array
         for (let i = 0; i < phoneNum.length; i++) {
             if (phoneNum[i] === '(' || phoneNum[i] === ')' || phoneNum[i] === '-' || phoneNum[i] === '.') {
                 phoneNum.splice(i, 1)
             }
         }
         phoneNum = formatPhoneNum(phoneNum)
-        return phoneNum
     }
     // contactHtml
     let contactHtml = `
-        <div class="card-contact">
-            <p>${email}</p>
+        <div class="park-contact">
+            <a href="${email}}">${email}</a>
             <p>${phoneNum}</p>
         </div>`
     return contactHtml
 }
 
-function handleCardHours(hours) {
-    let hoursHtml = `
-        <div class="card-hours">
-            <ul class="days-list">
-                <p class="day">sun</p>
-                <p class="day">mon</p>
-                <p class="day">tue</p>
-                <p class="day">wed</p>
-                <p class="day">thu</p>
-                <p class="day">fri</p>
-                <p class="day">sat</p>
-            </ul>
-            <ul class="hours-list">
-                <p class="hours">${hours.sunday}</p>
-                <p class="hours">${hours.monday}</p>
-                <p class="hours">${hours.tuesday}</p>
-                <p class="hours">${hours.wednesday}</p>
-                <p class="hours">${hours.thursday}</p>
-                <p class="hours">${hours.friday}</p>
-                <p class="hours">${hours.saturday}</p>
-            </ul>
-        </div>`
+function handleCardHours(operatingHours) {
+    let hoursHtml = ''
+    if (operatingHours.length === 0) {
+        hoursHtml = `<p>no hours listed</p>`
+    } else {
+        let hours = operatingHours[0].standardHours
+        hoursHtml = `
+            <div class="park-hours">
+                <ul class="days-list">
+                    <p class="day">sun</p>
+                    <p class="day">mon</p>
+                    <p class="day">tue</p>
+                    <p class="day">wed</p>
+                    <p class="day">thu</p>
+                    <p class="day">fri</p>
+                    <p class="day">sat</p>
+                </ul>
+                <ul class="hours-list">
+                    <p class="hours">${hours.sunday}</p>
+                    <p class="hours">${hours.monday}</p>
+                    <p class="hours">${hours.tuesday}</p>
+                    <p class="hours">${hours.wednesday}</p>
+                    <p class="hours">${hours.thursday}</p>
+                    <p class="hours">${hours.friday}</p>
+                    <p class="hours">${hours.saturday}</p>
+                </ul>
+            </div>`
+    }
     return hoursHtml
 }
 
-function handleCardAlerts(parkCode) {
-    let alertStr = getAlerts(parkCode)
-    console.log(alertStr)
-}
-
 function handleCardLinks(park) {
+    // console.log(park)
     // fees
     let feesStr = ''
-    if (park.entranceFees[0].cost === '0.00') {
+    if (park.entranceFees.length === 0) {
+        feesStr = 'fees n/a'
+    } else if (park.entranceFees[0].cost === 0) {
         feesStr = 'free entry'
     } else {
         feesStr = 'fees'
     }
-    let feesLink = `<a href="https://www.nps.gov/${park.parkCode}/planyourvisit/fees.htm" class="link">${feesStr}</a>`
-    // webcam
-
+    // links HTML
     let linksHtml = `
-        <div class="links-wrapper">
-            <a href="${park.directionsUrl}" class="link">directions</a>
-            ${feesLink}
-            <a href="${park.url}" class="link">nps website</a>
-        </div>`
+        <a href="${park.directionsUrl}" class="link link-dir" target="_blank">directions</a>
+        <a href="https://www.nps.gov/${park.parkCode}/planyourvisit/fees.htm" class="link link-fees" target="_blank">${feesStr}</a>
+        <a href="${park.url}" class="link link-nps" target="_blank">nps website</a>`
     return linksHtml
 }
 
+async function handleCardWebcam(card) {
+    const linksDiv = card.querySelector('.park-links')
+    let webcamA
+    if (!card.classList.contains('cam-checked')) {
+        let parkCode = card.querySelector('.park-code').innerHTML
+        let webcamData = await getWebcam(parkCode)
+        if (webcamData.data.length > 0) {
+            let webcamIndex = getRanNum(webcamData.data.length)
+            let webcamUrl = webcamData.data[webcamIndex].url
+            webcamA = document.createElement('a')
+            webcamA.setAttribute("href", `${webcamUrl}`)
+            webcamA.setAttribute("class", "link link-webcam")
+            webcamA.setAttribute("target", "_blank")
+            webcamA.innerHTML = 'webcam'
+            linksDiv.append(webcamA)
+        }
+        card.classList.add('cam-checked')
+    }
+}
 
-// =========== GENERATE ===========
+async function handleCardAlert(card) {
+    const alertDiv = card.querySelector('.park-alert')
+    if (!card.classList.contains('alerted')) {
+        let parkCode = card.querySelector('.park-code').innerHTML
+        let alertData = await getAlert(parkCode)
+        if (alertData.data.length === 0) {
+            alertHtml = `
+            <p class="alert-latest">latest</p>
+            <p class="alert-message">no current announcements</p>`
+        } else {
+            let alertTitle = alertData.data[0].title
+            let alertUrl = alertData.data[0].url
+            alertHtml = `
+            <p class="alert-latest">latest</p>
+            <a href="${alertUrl}" class="alert-message" target="_blank">${alertTitle}</a>`
+        }
+        card.classList.add('alerted')
+    }
+    alertDiv.innerHTML = alertHtml
+}
 
-function generateDirectoryHeaderHtml(state, total) {
+
+// =========== RENDER ===========
+
+function renderDirectoryHeader(state, total) {
     let directoryHeaderHtml = `
     <div class="directory-header">
         <h3>${state}</h3>
@@ -160,20 +203,28 @@ function generateDirectoryHeaderHtml(state, total) {
     return directoryHeaderHtml
 }
 
-function generateParkCardHtml(park) {
+function renderParkCard(park) {
     // console.log(park)
     let parkCardHtml = `
     <div class="park-card">
-        <h4>${park.fullName}</h4>
-        <p>${park.latitude}</p>
-        <p>${park.longitude}</p>
-        <p>${park.parkCode}</p>
-        ${handleCardTopics(park.topics)}
-        ${handleCardContact(park.contacts)}
-        ${handleCardAddress(park.addresses)}
-        ${handleCardAlerts(park.parkCode)}
-        ${handleCardLinks(park)}
-        ${handleCardHours(park.operatingHours[0].standardHours)}
+        <h4 class="park-name">${park.fullName}</h4>
+        <p class="park-lat">${park.latitude}</p>
+        <p class="park-long">${park.longitude}</p>
+        <div class="card-front">
+            <p class="park-code">${park.parkCode}</p>
+            ${handleCardTopics(park.topics)}
+        </div>
+        <div class="card-back hidden">
+            <div class="card-switch">X</div>
+            ${handleCardContact(park.contacts)}
+            ${handleCardAddress(park.addresses)}
+            <div class="park-alert"></div>
+            <div class="park-links">
+                ${handleCardLinks(park)}
+            </div>
+            ${handleCardHours(park.operatingHours)}
+            <p class="park-para">${park.description}</p>
+        </div>
     </div>`
     return parkCardHtml
 }
@@ -186,11 +237,11 @@ function renderDirectory(state, parksData) {
     directoryWrapper.innerHTML = ''
     // header
     let parkTotal = parksData.total
-    let directoryHeaderHtml = generateDirectoryHeaderHtml(state, parkTotal)
+    let directoryHeaderHtml = renderDirectoryHeader(state, parkTotal)
     // list
     let parkListHtml = ''
     for (let park of parksData.data) {
-        let parkCardHtml = generateParkCardHtml(park)
+        let parkCardHtml = renderParkCard(park)
         parkListHtml += parkCardHtml
     }
     // render to dom
@@ -200,23 +251,31 @@ function renderDirectory(state, parksData) {
             ${parkListHtml}
         </div>`
     directoryWrapper.innerHTML = directoryHtml
+    watchParkCard()
 }
 
 
 // =========== FETCH ===========
 const npsApiUrl = `https://frozen-castle-15409.herokuapp.com/parks`
 
-async function getAlerts(parkCode) {
+async function getAlert(parkCode) {
     try {
-        const alertsPromise = await fetch(`${npsApiUrl}/alerts?parkCode=${parkCode}`)
-        const alertsJson = await alertsPromise.json()
-        if (alertsJson.total > 0) {
-            console.log(alertsJson.data[0])
-        } else if (alertsJson.total === 0) {
-            return ''
-        }
+        const alertPromise = await fetch(`${npsApiUrl}/alerts?parkCode=${parkCode}`)
+        const alertData = await alertPromise.json()
+        return alertData
     } catch (err) {
-        alert("Could not connect to alerts.")
+        alert("Could not connect to directory. Try again later.")
+        console.error(err)
+    }
+}
+
+async function getWebcam(parkCode) {
+    try{
+        const webcamPromise = await fetch(`${npsApiUrl}/webcams?parkCode=${parkCode}`)
+        const webcamData = await webcamPromise.json()
+        return webcamData
+    } catch (err) {
+        alert("Could not connect to directory. Try again later.")
         console.error(err)
     }
 }
@@ -238,6 +297,25 @@ async function getParks(state) {
 
 
 // =========== WATCH ===========
+
+function toggleCard(card) {
+    card.querySelector('.card-front').classList.toggle('hidden')
+    card.querySelector('.card-back').classList.toggle('hidden')
+}
+
+function watchParkCard() {
+    let parkCardArray = document.querySelectorAll('.park-card')
+    for (let card of parkCardArray) {
+        card.querySelector('.card-front').addEventListener('click', () => {
+            toggleCard(card)
+            handleCardAlert(card)
+            handleCardWebcam(card)
+        })
+        card.querySelector('.card-switch').addEventListener('click', () => {
+            toggleCard(card)
+        })
+    }
+}
 
 function watchForm() {
     // submit state
