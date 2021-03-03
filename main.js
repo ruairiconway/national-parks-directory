@@ -1,15 +1,24 @@
 'use strict'
 
 // =========== VARIABLES ===========
+const landingWrapper = document.getElementById('js-landing-wrapper')
+const stateForm = document.getElementById('js-state-form')
 const stateDropdown = document.getElementById('js-state-select')
 const submitBtn = document.getElementById('js-submit-btn')
 const noStateMsg = document.getElementById('js-no-state-message')
 const directoryWrapper = document.getElementById('js-directory-wrapper')
+const pageLoaderDiv = document.getElementById('js-page-loader')
+const directoryLoaderDiv = document.getElementById('js-directory-loader')
 let alertHtml = ''
 let webcamHtml = ''
 
 
 // =========== TOOLS ===========
+
+function toggleCard(card) {
+    card.querySelector('.card-front').classList.toggle('hidden')
+    card.querySelector('.card-back').classList.toggle('hidden')
+}
 
 function getRanNum(max) {
     return Math.floor(Math.random() * (max))
@@ -21,6 +30,32 @@ function formatPhoneNum(num) {
     num.splice(5, 0, ' ')
     num.splice(9, 0, ' ')
     return num.join('')
+}
+
+function scrollToDirectory() {
+    document.body.style.overflow = "visible"
+    const anim = requestAnimationFrame((timestamp) => {
+        const stamp = timestamp || new Date().getTime();
+        const duration = 1200
+        const start = stamp
+        const startScrollOffset = window.pageYOffset
+        const scrollDirectoryTop = directoryWrapper.getBoundingClientRect().top
+        scrollToElem(start, stamp, duration, scrollDirectoryTop, startScrollOffset)
+    })
+    const easeInCubic = function(t) {return t*t*t}
+    const scrollToElem = (startTime, currentTime, duration, scrollEndElemTop, startScrollOffset) => {
+        const runtime = currentTime - startTime
+        let progress = runtime/duration
+        progress = Math.min(progress, 1)
+        const ease = easeInCubic(progress)
+        window.scroll(0, startScrollOffset + (scrollEndElemTop * ease))
+        if (runtime < duration) {
+            requestAnimationFrame((timestamp) => {
+                const currentTime = timestamp || new Date().getTime()
+                scrollToElem(startTime, currentTime, duration, scrollEndElemTop, startScrollOffset)
+            })
+        }
+    }
 }
 
 
@@ -73,11 +108,15 @@ function handleCardAddress(addresses) {
 
 function handleCardContact(contact) {
     // email
-    let email
-    if (contact.emailAddresses.length > 0) {
+    let email = ''
+    let emailHtml = ''
+    const includesDomain = contact.emailAddresses[0].emailAddress.includes('@nps.gov')
+    if (contact.emailAddresses.length > 0 && includesDomain) {
         email = contact.emailAddresses[0].emailAddress // email
+        emailHtml = `
+            <a href="${email}">${email}</a>`
     } else {
-        email = ''
+        emailHtml = ''
     }
     // phoneNum
     let phoneNum
@@ -90,11 +129,12 @@ function handleCardContact(contact) {
         }
         phoneNum = formatPhoneNum(phoneNum)
     }
+    let phoneNumHtml = `<p>${phoneNum}</p>`
     // contactHtml
     let contactHtml = `
         <div class="park-contact">
-            <a href="${email}}">${email}</a>
-            <p>${phoneNum}</p>
+            ${emailHtml}
+            ${phoneNumHtml}
         </div>`
     return contactHtml
 }
@@ -131,7 +171,6 @@ function handleCardHours(operatingHours) {
 }
 
 function handleCardLinks(park) {
-    // console.log(park)
     // fees
     let feesStr = ''
     if (park.entranceFees.length === 0) {
@@ -190,6 +229,23 @@ async function handleCardAlert(card) {
     alertDiv.innerHTML = alertHtml
 }
 
+function handleDirectoryLoader() {
+    directoryWrapper.style.minHeight = "100vh"
+    directoryWrapper.innerHTML = '<div>LOADING</div>'
+    scrollToDirectory()
+}
+
+function handleFormScroll() {
+    window.addEventListener('scroll', () => {
+        const scrollTarget = landingWrapper.scrollHeight * (3/5)
+        if (scrollTarget < window.scrollY) {
+            stateForm.classList.add('state-form-mini')
+        } else {
+            stateForm.classList.remove('state-form-mini')
+        }
+    })
+}
+
 
 // =========== RENDER ===========
 
@@ -204,7 +260,6 @@ function renderDirectoryHeader(state, total) {
 }
 
 function renderParkCard(park) {
-    // console.log(park)
     let parkCardHtml = `
     <div class="park-card">
         <h4 class="park-name">${park.fullName}</h4>
@@ -218,7 +273,10 @@ function renderParkCard(park) {
             <div class="card-switch">X</div>
             ${handleCardContact(park.contacts)}
             ${handleCardAddress(park.addresses)}
-            <div class="park-alert"></div>
+            <div class="park-alert">
+                <p class="alert-latest">latest</p>
+                <p class="alert-message">loading</p>
+            </div>
             <div class="park-links">
                 ${handleCardLinks(park)}
             </div>
@@ -228,9 +286,6 @@ function renderParkCard(park) {
     </div>`
     return parkCardHtml
 }
-
-
-// =========== RENDER ===========
 
 function renderDirectory(state, parksData) {
     // reset
@@ -254,8 +309,21 @@ function renderDirectory(state, parksData) {
     watchParkCard()
 }
 
+function renderPageLoader() {
+    let quoteData = getQuote()
+    let pageLoaderHtml = `
+        <p class="loader-content loader-quote">${quoteData.quote}</p>
+        <p class="loader-content loader-author">-${quoteData.author}</p>
+        <p class="loader-content loader-title">${quoteData.title}</p>`
+    pageLoaderDiv.innerHTML = pageLoaderHtml
+    setTimeout(() => {
+        pageLoaderDiv.classList.remove('active')
+        pageLoaderDiv.innerHTML = ''
+    }, 1000);
+}
 
-// =========== FETCH ===========
+
+// =========== GET / FETCH ===========
 const npsApiUrl = `https://frozen-castle-15409.herokuapp.com/parks`
 
 async function getAlert(parkCode) {
@@ -295,13 +363,18 @@ async function getParks(state) {
     }
 }
 
+function getQuote() {
+    let quoteIndex = getRanNum(quotes.length)
+    let quoteData = {
+        quote: quotes[quoteIndex].quote,
+        author: quotes[quoteIndex].author,
+        title: quotes[quoteIndex].title
+    }
+    return quoteData
+}
+
 
 // =========== WATCH ===========
-
-function toggleCard(card) {
-    card.querySelector('.card-front').classList.toggle('hidden')
-    card.querySelector('.card-back').classList.toggle('hidden')
-}
 
 function watchParkCard() {
     let parkCardArray = document.querySelectorAll('.park-card')
@@ -318,6 +391,7 @@ function watchParkCard() {
 }
 
 function watchForm() {
+    handleFormScroll()
     // submit state
     submitBtn.addEventListener('click', (e) => {
         e.preventDefault()
@@ -326,6 +400,7 @@ function watchForm() {
         if (stateSearch === 'none-selected') {
             stateDropdown.classList.add('state-dropdown-error')
         } else {
+            handleDirectoryLoader()
             getParks(stateSearch)
         }
     })
@@ -335,4 +410,8 @@ function watchForm() {
     })
 }
 
+
+// =========== ON LOAD ===========
+
+renderPageLoader()
 watchForm()
