@@ -13,7 +13,7 @@
 
 <body>
 
-    <div>
+    <div id="js-landing-wrapper" class="landing-wrapper">
         <header>
             <h1>
                 <span>*an unofficial</span>
@@ -28,7 +28,7 @@
             <h2>Find details on National Parks across the U.S.</h2>
             <p>Search by state using dropwdown below.</p>
             <p>Results are alphabetical.</p>
-            <form>
+            <form id="js-state-form" class="state-form">
                 <select id="js-state-select" class="state-dropdown" aria-label="state select dropdown" name="states-list" required>
                         <option value="none-selected">- select state -</option>
                         <option value="AL">Alabama</option>
@@ -92,8 +92,7 @@
     <main id="js-directory-wrapper" class="directory-wrapper">
         <!-- PARK DIRECTORY CONTENT -->
     </main>
-
-    <div id="js-loader" class="loader active"></div>
+    <div id="js-page-loader" class="loader page-loader active"></div>
 
     <!-- scripts -->
     <script src="quotes.js"></script>
