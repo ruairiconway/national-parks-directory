@@ -22,6 +22,11 @@ img {
     object-fit: cover;
 }
 
+ul, ol, li {
+    padding: 0;
+    margin: 0;
+}
+
 
 /* ===== TYPESTYLES ===== */
 
@@ -97,6 +102,57 @@ h3 {
     letter-spacing: 1px;
 }
 
+.park-lat,
+.park-long {
+    font-family: 'IBM Plex Sans',sans-serif;
+    font-weight: 300;
+    font-size: 1rem;
+    letter-spacing: 10px;
+}
+
+.park-code {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 7rem;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+}
+
+.park-name {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 2rem;
+    text-transform: capitalize;
+    letter-spacing: 1px;
+    line-height: 1.5;
+}
+
+.park-topics {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    line-height: 1.5;
+}
+
+.park-contact,
+.park-address,
+.park-alert,
+.park-links,
+.park-hours,
+.park-para {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 300;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+}
+
+.park-hours,
+.park-para {
+    line-height: 1.6;
+}
+
 
 /* ===== LANDING ===== */
 
@@ -166,7 +222,7 @@ h3 {
     right: 50%;
     transform: translate(50%);
     padding: 1rem;
-    background: white;
+    z-index: 2;
 }
 
 @media screen and (min-width: 650px) {
@@ -201,46 +257,177 @@ h3 {
     transform: translate(-50%);
 }
 
-.park-card {
-    margin: 50px 0;
-}
-
-.park-card:first-of-type {
-    margin: 0 0 50px;
-}
-
 
 /* ===== DIRECTORY ===== */
 
 .directory-wrapper {
-    background: lightgrey;
     padding: 0 5rem;
-    z-index: 0;
 }
 
 .directory-header {
     position: -webkit-sticky;
     position: sticky;
     top: 0;
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
-    align-items: flex-start;
+    display: grid;
+    grid-template-columns: 50% 1fr 1fr;
     padding: 5rem 0;
-    z-index: 1;
+    z-index: 0;
 }
 
-/* .directory-header-sticky {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    padding: 5rem;
-} */
+.directory-header-p {
+    text-align: right;
+}
 
 .directory-list {
     position: relative;
-    z-index: 2;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 2rem;
+    padding: 4rem 0;
+}
+
+.park-card {
+    margin: auto;
+    background: lightgrey;
+    width: 450px;
+    height: 450px;
+    display: grid;
+    position: relative;
+    padding: 2rem;
+}
+
+.park-card.card-front {
+    grid-template: 50% 2fr 1fr / auto;
+    grid-template-areas:
+        "p-cod"
+        "p-nam"
+        "p-top";
+}
+
+.park-card.card-back {
+    grid-template: minmax(auto,20%) auto 1fr 20% 1fr / auto 1fr minmax(auto,40%);
+    grid-gap: 2rem;
+    grid-template-areas:
+        "p-nam p-nam p-nam"
+        "p-con p-add p-add"
+        "p-ale p-ale p-hou"
+        "p-lin p-lin p-hou"
+        "p-par p-par p-par";
+}
+
+.card-switch {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 10%;
+    height: 10%;
+}
+
+.park-code {
+    grid-area: p-cod;
+    color: white;
+}
+
+.park-name {
+    grid-area: p-nam;
+}
+
+.park-topics {
+    grid-area: p-top;
+    align-self: end;
+}
+
+.park-contacts {
+    grid-area: p-con;
+}
+
+.park-address {
+    grid-area: p-add;
+    text-align: right;
+}
+
+.park-alert {
+    grid-area: p-ale;
+}
+
+.park-links {
+    grid-area: p-lin;
+    display: grid;
+    grid-template: 1fr 1fr / 1fr 1fr;
+    grid-gap: 1.5rem;
+    grid-template-areas:
+        "l-dir l-fee"
+        "l-nps l-nps";
+}
+
+.link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+}
+
+.link-dir {
+    grid-area: l-dir;
+}
+
+.link-fees {
+    grid-area: l-fee;
+}
+
+.link-nps {
+    grid-area: l-nps;
+}
+
+.link-webcam {
+    grid-area: l-cam;
+}
+
+.park-hours {
+    grid-area: p-hou;
+    display: grid;
+    grid-template: auto / 20% auto;
+    justify-content: end;
+    align-content: end;
+}
+
+.days-list {
+    text-align: right;
+    margin-right: 2rem;
+}
+
+.park-para {
+    grid-area: p-par;
+    align-self: end;
+}
+
+.park-lat,
+.park-long {
+    position: absolute;
+    width: 100%;
+    color: lightgray;
+}
+
+.park-lat {
+    transform: translateY(-9.5px);
+    padding: 0 0 0 1rem;
+}
+
+.park-long {
+    transform-origin: top left;
+    transform: rotate(-90deg) translateX(-100%);
+    left: -9.5px;
+    text-align: right;
+    padding: 0 1rem 0 0;
+}
+
+.park-card:nth-child(even) {
+    margin-top: 4rem;
+}
+
+.park-card:nth-child(odd) {
+    margin-bottom: 4rem;
 }
 
 

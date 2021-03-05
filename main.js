@@ -204,9 +204,9 @@ function handleCardLinks(park) {
     }
     // links HTML
     let linksHtml = `
-        <a href="${park.directionsUrl}" class="link link-dir" target="_blank">directions</a>
-        <a href="https://www.nps.gov/${park.parkCode}/planyourvisit/fees.htm" class="link link-fees" target="_blank">${feesStr}</a>
-        <a href="${park.url}" class="link link-nps" target="_blank">nps website</a>`
+        <a href="${park.directionsUrl}" class="link link-dir" target="_blank"><p>directions</p></a>
+        <a href="https://www.nps.gov/${park.parkCode}/planyourvisit/fees.htm" class="link link-fees" target="_blank"><p>${feesStr}</p></a>
+        <a href="${park.url}" class="link link-nps" target="_blank"><p>nps website</p></a>`
     return linksHtml
 }
 
@@ -259,14 +259,6 @@ function handleScroll() {
         } else {
             stateForm.classList.remove('state-form-mini')
         }
-        // const directoryHeader = document.querySelector('.directory-header')
-        // if (directoryWrapper.offsetTop <= window.pageYOffset) {
-        //     directoryHeader.classList.add('directory-header-fixed')
-        //     directoryWrapper.style.paddingTop = "251px"
-        // } else {
-        //     directoryHeader.classList.remove('directory-header-fixed')
-        //     directoryWrapper.style.paddingTop = 0
-        // }
     })
 }
 
@@ -294,8 +286,8 @@ function renderParkCard(park) {
     let parkCardHtml = `
     <div class="park-card card-front">
         <h4 class="park-name">${park.fullName}</h4>
-        <p class="park-lat">${park.latitude}</p>
-        <p class="park-long">${park.longitude}</p>
+        <p class="park-lat">LAT: ${park.latitude}</p>
+        <p class="park-long">LON: ${park.longitude}</p>
         <button type="button" class="card-switch">+</button>
         <p class="park-code">${park.parkCode}</p>
         ${handleCardTopics(park.topics)}
