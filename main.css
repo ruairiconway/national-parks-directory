@@ -22,56 +22,234 @@ img {
     object-fit: cover;
 }
 
-/* ===== BASE ===== */
 
+/* ===== TYPESTYLES ===== */
+
+html {
+    font-size: 10px;
+}
+
+/* 
+font-family: 'Montserrat', sans-serif;
+font-family: 'IBM Plex Sans', sans-serif;
+*/
+
+.loader-content {
+    font-family: 'IBM Plex Sans',sans-serif;
+    font-weight: 300;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+    line-height: 1.5;
+}
+
+h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 7rem;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+}
+
+.title-note {
+    font-size: 1rem;
+    text-transform: lowercase;
+    letter-spacing: 1px;
+}
+
+h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 2rem;
+    letter-spacing: 1px;
+    line-height: 1.5;
+}
+
+.search-line, 
+.error-message {
+    font-family: 'IBM Plex Sans',sans-serif;
+    font-weight: 300;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+    line-height: 1.5;
+}
+
+.form-input {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 2rem;
+    text-transform: capitalize;
+    letter-spacing: 1px;
+}
+
+h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 20rem;
+    letter-spacing: 5px;
+    line-height: 0.75;
+}
+
+.directory-header-p {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 2rem;
+    text-transform: capitalize;
+    letter-spacing: 1px;
+}
+
+
+/* ===== LANDING ===== */
+
+/* HEADER */
 .landing-wrapper {
     height: 100vh;
+    display: grid;
+    grid-template: 1fr / 1fr 1fr;
+}
+
+.title-wrapper {
     display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 0 0 4rem;
+}
+
+.title {
+    transform: translate(0, -1rem);
+}
+
+.title-span {
+    display: block;
+    text-align: right;
+    margin: 0 0 4rem;
+}
+.title-span:last-child {
+    margin: 0;
+}
+
+.title-note {
+    margin: 0;
+}
+
+/* SEARCH */
+
+.search-wrapper {
+    display: flex;
+    flex-flow: column nowrap;
     justify-content: center;
     align-items: center;
+    padding: 4rem;
+}
+
+.search-details {
+    padding: 4rem;
+    background: lightgrey;
+    max-width: 425px;
+}
+
+.search-line {
+    margin: 4rem 0;
 }
 
 .state-form {
-
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .state-form-mini {
+    justify-content: space-around;
     position: fixed;
-    top: 0;
-    background: red;
+    width: 100%;
+    bottom: 0;
+    right: 50%;
+    transform: translate(50%);
+    padding: 1rem;
+    background: white;
+}
+
+@media screen and (min-width: 650px) {
+
+    .state-form-mini {
+        width: 300px;
+        bottom: 4rem;
+        right: 4rem;
+        transform: translate(0);
+    }
+
 }
 
 .state-dropdown {
-    text-transform: uppercase;
+    width: 47.5%;
+    padding: 1rem;
+}
+
+.state-submit {
+    width: 45%;
+    padding: 1rem;
 }
 
 .state-dropdown-error {
     background: red;
 }
 
-.directory-wrapper {
-    background: lightgrey;
+.error-message {
+    position: fixed;
+    top: 4rem;
+    left: 50%;
+    transform: translate(-50%);
 }
 
 .park-card {
     margin: 50px 0;
 }
 
+.park-card:first-of-type {
+    margin: 0 0 50px;
+}
+
+
+/* ===== DIRECTORY ===== */
+
+.directory-wrapper {
+    background: lightgrey;
+    padding: 0 5rem;
+}
+
+.directory-header {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 5rem 0;
+}
+
 
 /* ===== LOADER ===== */
 
-.page-loader {
+.loader {
     display: none;
+    justify-content: center;
+    align-items: center;
     z-index: 5;
-    position: fixed;
+    position: absolute;
     top: 0;
     width: 100%;
     height: 100%;
-    background: grey;
+    background: white;
 }
 
-.active {
-    display: block;
+.loader-active {
+    display: flex;
+}
+
+.quote-wrapper {
+    max-width: 425px;
+}
+
+.loader-author {
+    margin: 2rem 0;
 }
 
 /* ===== HIDDEN ===== */
