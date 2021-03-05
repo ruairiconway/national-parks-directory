@@ -5,19 +5,63 @@ const landingWrapper = document.getElementById('js-landing-wrapper')
 const stateForm = document.getElementById('js-state-form')
 const stateDropdown = document.getElementById('js-state-select')
 const submitBtn = document.getElementById('js-submit-btn')
-const noStateMsg = document.getElementById('js-no-state-message')
+const errorMsg = document.getElementById('js-error-message')
 const directoryWrapper = document.getElementById('js-directory-wrapper')
 const pageLoaderDiv = document.getElementById('js-page-loader')
-const directoryLoaderDiv = document.getElementById('js-directory-loader')
 let alertHtml = ''
 let webcamHtml = ''
 
 
 // =========== TOOLS ===========
 
+function setCardState() {
+    const contactArray = document.querySelectorAll('.park-contact')
+    const addressArray = document.querySelectorAll('.park-address')
+    const alertArray = document.querySelectorAll('.park-alert')
+    const linksArray = document.querySelectorAll('.park-links')
+    const hoursArray = document.querySelectorAll('.park-hours')
+    const paraArray = document.querySelectorAll('.park-para')
+    const cardStateArray = [contactArray, addressArray, alertArray, linksArray, hoursArray, paraArray]
+    cardStateArray.forEach( (array) => {
+        for (let i of array) {
+            console.log(i.classList.add('hidden'))
+        }
+    })
+}
+
 function toggleCard(card) {
-    card.querySelector('.card-front').classList.toggle('hidden')
-    card.querySelector('.card-back').classList.toggle('hidden')
+    const eleFront = [
+        '.park-code',
+        '.park-topics',
+    ]
+    const eleBack = [
+        '.park-contact',
+        '.park-address',
+        '.park-alert',
+        '.park-links',
+        '.park-hours',
+        '.park-para',
+    ]
+    if (card.classList.contains('card-front')) {
+        for (let ele of eleFront) {
+            card.querySelector(ele).classList.add('hidden')
+        }
+        for (let ele of eleBack) {
+            card.querySelector(ele).classList.remove('hidden')
+        }
+        card.classList.remove('card-front')
+        card.classList.add('card-back')
+
+    } else if (card.classList.contains('card-back')) {
+        for (let ele of eleFront) {
+            card.querySelector(ele).classList.remove('hidden')
+        }
+        for (let ele of eleBack) {
+            card.querySelector(ele).classList.add('hidden')
+        }
+        card.classList.remove('card-back')
+        card.classList.add('card-front')
+    }
 }
 
 function getRanNum(max) {
@@ -30,32 +74,6 @@ function formatPhoneNum(num) {
     num.splice(5, 0, ' ')
     num.splice(9, 0, ' ')
     return num.join('')
-}
-
-function scrollToDirectory() {
-    document.body.style.overflow = "visible"
-    const anim = requestAnimationFrame((timestamp) => {
-        const stamp = timestamp || new Date().getTime();
-        const duration = 1200
-        const start = stamp
-        const startScrollOffset = window.pageYOffset
-        const scrollDirectoryTop = directoryWrapper.getBoundingClientRect().top
-        scrollToElem(start, stamp, duration, scrollDirectoryTop, startScrollOffset)
-    })
-    const easeInCubic = function(t) {return t*t*t}
-    const scrollToElem = (startTime, currentTime, duration, scrollEndElemTop, startScrollOffset) => {
-        const runtime = currentTime - startTime
-        let progress = runtime/duration
-        progress = Math.min(progress, 1)
-        const ease = easeInCubic(progress)
-        window.scroll(0, startScrollOffset + (scrollEndElemTop * ease))
-        if (runtime < duration) {
-            requestAnimationFrame((timestamp) => {
-                const currentTime = timestamp || new Date().getTime()
-                scrollToElem(startTime, currentTime, duration, scrollEndElemTop, startScrollOffset)
-            })
-        }
-    }
 }
 
 
@@ -110,11 +128,15 @@ function handleCardContact(contact) {
     // email
     let email = ''
     let emailHtml = ''
-    const includesDomain = contact.emailAddresses[0].emailAddress.includes('@nps.gov')
-    if (contact.emailAddresses.length > 0 && includesDomain) {
+    // const includesDomain = contact.emailAddresses[0].emailAddress.includes('@nps.gov')
+    if (contact.emailAddresses.length > 0) { // && includesDomain
         email = contact.emailAddresses[0].emailAddress // email
-        emailHtml = `
+        if (email === '0@0') {
+            emailHtml = ''
+        } else {
+            emailHtml = `
             <a href="${email}">${email}</a>`
+        }
     } else {
         emailHtml = ''
     }
@@ -229,15 +251,9 @@ async function handleCardAlert(card) {
     alertDiv.innerHTML = alertHtml
 }
 
-function handleDirectoryLoader() {
-    directoryWrapper.style.minHeight = "100vh"
-    directoryWrapper.innerHTML = '<div>LOADING</div>'
-    scrollToDirectory()
-}
-
 function handleFormScroll() {
     window.addEventListener('scroll', () => {
-        const scrollTarget = landingWrapper.scrollHeight * (3/5)
+        const scrollTarget = landingWrapper.scrollHeight - 75
         if (scrollTarget < window.scrollY) {
             stateForm.classList.add('state-form-mini')
         } else {
@@ -246,43 +262,46 @@ function handleFormScroll() {
     })
 }
 
+function handleGetParksError() {
+    let errorHtml = `
+        <p class="error-message">Could not connect to database, try again later!</p>`
+    errorMsg.innerHTML = errorHtml
+    errorMsg.classList.remove('hidden')
+}
+
 
 // =========== RENDER ===========
 
 function renderDirectoryHeader(state, total) {
     let directoryHeaderHtml = `
     <div class="directory-header">
-        <h3>${state}</h3>
-        <p>${total} parks</p>
-        <p>NPS Directory</p>
+        <h3 class="directory-header-title">${state}</h3>
+        <p class="directory-header-p">${total} parks</p>
+        <p class="directory-header-p">NPS Directory</p>
     </div>`
     return directoryHeaderHtml
 }
 
 function renderParkCard(park) {
     let parkCardHtml = `
-    <div class="park-card">
+    <div class="park-card card-front">
         <h4 class="park-name">${park.fullName}</h4>
         <p class="park-lat">${park.latitude}</p>
         <p class="park-long">${park.longitude}</p>
-        <div class="card-front">
-            <p class="park-code">${park.parkCode}</p>
-            ${handleCardTopics(park.topics)}
+        <button type="button" class="card-switch">+</button>
+        <p class="park-code">${park.parkCode}</p>
+        ${handleCardTopics(park.topics)}
+        ${handleCardContact(park.contacts)}
+        ${handleCardAddress(park.addresses)}
+        <div class="park-alert">
+            <p class="alert-latest">latest</p>
+            <p class="alert-message">loading</p>
         </div>
-        <div class="card-back hidden">
-            <div class="card-switch">X</div>
-            ${handleCardContact(park.contacts)}
-            ${handleCardAddress(park.addresses)}
-            <div class="park-alert">
-                <p class="alert-latest">latest</p>
-                <p class="alert-message">loading</p>
-            </div>
-            <div class="park-links">
-                ${handleCardLinks(park)}
-            </div>
-            ${handleCardHours(park.operatingHours)}
-            <p class="park-para">${park.description}</p>
+        <div class="park-links">
+            ${handleCardLinks(park)}
         </div>
+        ${handleCardHours(park.operatingHours)}
+        <p class="park-para">${park.description}</p>
     </div>`
     return parkCardHtml
 }
@@ -306,18 +325,21 @@ function renderDirectory(state, parksData) {
             ${parkListHtml}
         </div>`
     directoryWrapper.innerHTML = directoryHtml
+    setCardState()
     watchParkCard()
 }
 
 function renderPageLoader() {
     let quoteData = getQuote()
     let pageLoaderHtml = `
-        <p class="loader-content loader-quote">${quoteData.quote}</p>
-        <p class="loader-content loader-author">-${quoteData.author}</p>
-        <p class="loader-content loader-title">${quoteData.title}</p>`
+        <div class="quote-wrapper">
+            <p class="loader-content loader-quote">"${quoteData.quote}"</p>
+            <p class="loader-content loader-author">-${quoteData.author}</p>
+            <p class="loader-content loader-title">${quoteData.title}</p>
+        </div>`
     pageLoaderDiv.innerHTML = pageLoaderHtml
     setTimeout(() => {
-        pageLoaderDiv.classList.remove('active')
+        pageLoaderDiv.classList.remove('loader-active')
         pageLoaderDiv.innerHTML = ''
     }, 1000);
 }
@@ -353,12 +375,13 @@ async function getParks(state) {
         const parksPromise = await fetch(`${npsApiUrl}/parks?stateCode=${state}`)
         const parksJson = await parksPromise.json()
         if (parksJson.total === 0) {
-            noStateMsg.classList.remove('hidden')
+            handleGetParksError()
+            
         } else {
             renderDirectory(state, parksJson)
         }
     } catch (err) {
-        alert("Could not connect to directory. Try again later.")
+        handleGetParksError()
         console.error(err)
     }
 }
@@ -379,12 +402,9 @@ function getQuote() {
 function watchParkCard() {
     let parkCardArray = document.querySelectorAll('.park-card')
     for (let card of parkCardArray) {
-        card.querySelector('.card-front').addEventListener('click', () => {
-            toggleCard(card)
+        card.querySelector('.card-switch').addEventListener('click', () => {
             handleCardAlert(card)
             handleCardWebcam(card)
-        })
-        card.querySelector('.card-switch').addEventListener('click', () => {
             toggleCard(card)
         })
     }
@@ -392,21 +412,21 @@ function watchParkCard() {
 
 function watchForm() {
     handleFormScroll()
+    // reset state dropdown error
+    stateDropdown.addEventListener('click', () => {
+        stateDropdown.classList.remove('state-dropdown-error')
+        errorMsg.classList.add('hidden')
+    })
     // submit state
     submitBtn.addEventListener('click', (e) => {
         e.preventDefault()
         let stateSearch = stateDropdown.value
-        // check state is selected
+        // check state dropdown error
         if (stateSearch === 'none-selected') {
             stateDropdown.classList.add('state-dropdown-error')
         } else {
-            handleDirectoryLoader()
             getParks(stateSearch)
         }
-    })
-    // remove error check
-    stateDropdown.addEventListener('click', () => {
-        stateDropdown.classList.remove('state-dropdown-error')
     })
 }
 
