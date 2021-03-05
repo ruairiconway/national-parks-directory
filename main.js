@@ -24,7 +24,7 @@ function setCardState() {
     const cardStateArray = [contactArray, addressArray, alertArray, linksArray, hoursArray, paraArray]
     cardStateArray.forEach( (array) => {
         for (let i of array) {
-            console.log(i.classList.add('hidden'))
+            i.classList.add('hidden')
         }
     })
 }
@@ -251,14 +251,22 @@ async function handleCardAlert(card) {
     alertDiv.innerHTML = alertHtml
 }
 
-function handleFormScroll() {
+function handleScroll() {
     window.addEventListener('scroll', () => {
-        const scrollTarget = landingWrapper.scrollHeight - 75
-        if (scrollTarget < window.scrollY) {
+        const scrollFormTarget = landingWrapper.scrollHeight - 75
+        if (scrollFormTarget < window.scrollY) {
             stateForm.classList.add('state-form-mini')
         } else {
             stateForm.classList.remove('state-form-mini')
         }
+        // const directoryHeader = document.querySelector('.directory-header')
+        // if (directoryWrapper.offsetTop <= window.pageYOffset) {
+        //     directoryHeader.classList.add('directory-header-fixed')
+        //     directoryWrapper.style.paddingTop = "251px"
+        // } else {
+        //     directoryHeader.classList.remove('directory-header-fixed')
+        //     directoryWrapper.style.paddingTop = 0
+        // }
     })
 }
 
@@ -274,7 +282,7 @@ function handleGetParksError() {
 
 function renderDirectoryHeader(state, total) {
     let directoryHeaderHtml = `
-    <div class="directory-header">
+    <div id="js-directory-header" class="directory-header">
         <h3 class="directory-header-title">${state}</h3>
         <p class="directory-header-p">${total} parks</p>
         <p class="directory-header-p">NPS Directory</p>
@@ -327,6 +335,7 @@ function renderDirectory(state, parksData) {
     directoryWrapper.innerHTML = directoryHtml
     setCardState()
     watchParkCard()
+    handleScroll()
 }
 
 function renderPageLoader() {
@@ -411,7 +420,6 @@ function watchParkCard() {
 }
 
 function watchForm() {
-    handleFormScroll()
     // reset state dropdown error
     stateDropdown.addEventListener('click', () => {
         stateDropdown.classList.remove('state-dropdown-error')
