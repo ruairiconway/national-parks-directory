@@ -215,14 +215,32 @@ h3 {
 .directory-wrapper {
     background: lightgrey;
     padding: 0 5rem;
+    z-index: 0;
 }
 
 .directory-header {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
     align-items: flex-start;
     padding: 5rem 0;
+    z-index: 1;
+}
+
+/* .directory-header-sticky {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 5rem;
+} */
+
+.directory-list {
+    position: relative;
+    z-index: 2;
 }
 
 
