@@ -5,7 +5,7 @@ const landingWrapper = document.getElementById('js-landing-wrapper')
 const stateForm = document.getElementById('js-state-form')
 const stateDropdown = document.getElementById('js-state-select')
 const submitBtn = document.getElementById('js-submit-btn')
-const errorMsg = document.getElementById('js-error-message')
+const formMsg = document.getElementById('js-form-msg')
 const directoryWrapper = document.getElementById('js-directory-wrapper')
 const pageLoaderDiv = document.getElementById('js-page-loader')
 let alertHtml = ''
@@ -225,6 +225,7 @@ async function handleCardWebcam(card) {
             webcamA.setAttribute("target", "_blank")
             webcamA.innerHTML = 'webcam'
             linksDiv.append(webcamA)
+            linksDiv.classList.add('park-links-cam')
         }
         card.classList.add('cam-checked')
     }
@@ -251,22 +252,65 @@ async function handleCardAlert(card) {
     alertDiv.innerHTML = alertHtml
 }
 
+function handleCardPara(park) {
+    let descTrim = park.description.substring(0,310)
+    let descHtml = `
+        <p class="park-para">${descTrim}... <a href="${park.url}" class="para-link">read more.</a></p>`
+    return descHtml
+}
+
+function scrollToDirectoryTop() {
+    window.scroll({
+        top: landingWrapper.scrollHeight,
+        left: 0,
+        behavior: "smooth"
+    })
+}
+
 function handleScroll() {
+    handleRenderDirectorySuccess()
+    document.querySelector('#js-to-top-button').addEventListener('click', () => {
+        scrollToDirectoryTop()
+    })
     window.addEventListener('scroll', () => {
-        const scrollFormTarget = landingWrapper.scrollHeight - 75
+        // form shift
+        const scrollFormTarget = landingWrapper.scrollHeight
         if (scrollFormTarget < window.scrollY) {
             stateForm.classList.add('state-form-mini')
         } else {
             stateForm.classList.remove('state-form-mini')
         }
+        // scroll to top
+        const scrollToTopTarget = landingWrapper.scrollHeight + (document.querySelector('.directory-list').scrollHeight / 2)
+        if (scrollToTopTarget < window.scrollY) {
+            document.querySelector('#js-to-top-button').classList.remove('hidden')
+        } else {
+            document.querySelector('#js-to-top-button').classList.add('hidden')
+        }
     })
+}
+
+function handleRenderDirectorySuccess() {
+    formMsg.classList.add('form-msg-fade-out')
+    scrollToDirectoryTop()
+    setTimeout(() => {
+        formMsg.classList.add('hidden')
+        formMsg.classList.remove('form-msg-fade-out')
+    }, 500)
+}
+
+function handleGetParksLoad() {
+    let loadHtml = `
+    <p class="form-msg msg-load">Finding parks...</p>`
+    formMsg.innerHTML = loadHtml
+    formMsg.classList.remove('hidden')
 }
 
 function handleGetParksError() {
     let errorHtml = `
-        <p class="error-message">Could not connect to database, try again later!</p>`
-    errorMsg.innerHTML = errorHtml
-    errorMsg.classList.remove('hidden')
+        <p class="form-msg msg-error">Could not connect to database, try again later!</p>`
+    formMsg.innerHTML = errorHtml
+    formMsg.classList.remove('hidden')
 }
 
 
@@ -301,7 +345,7 @@ function renderParkCard(park) {
             ${handleCardLinks(park)}
         </div>
         ${handleCardHours(park.operatingHours)}
-        <p class="park-para">${park.description}</p>
+        ${handleCardPara(park)}
     </div>`
     return parkCardHtml
 }
@@ -332,17 +376,17 @@ function renderDirectory(state, parksData) {
 
 function renderPageLoader() {
     let quoteData = getQuote()
-    let pageLoaderHtml = `
+    let loaderHtml = `
         <div class="quote-wrapper">
             <p class="loader-content loader-quote">"${quoteData.quote}"</p>
             <p class="loader-content loader-author">-${quoteData.author}</p>
             <p class="loader-content loader-title">${quoteData.title}</p>
         </div>`
-    pageLoaderDiv.innerHTML = pageLoaderHtml
+    pageLoaderDiv.innerHTML = loaderHtml
     setTimeout(() => {
-        pageLoaderDiv.classList.remove('loader-active')
+        pageLoaderDiv.classList.add('hidden')
         pageLoaderDiv.innerHTML = ''
-    }, 4000);
+    }, 4750);
 }
 
 
@@ -377,7 +421,6 @@ async function getParks(state) {
         const parksJson = await parksPromise.json()
         if (parksJson.total === 0) {
             handleGetParksError()
-            
         } else {
             renderDirectory(state, parksJson)
         }
@@ -415,7 +458,7 @@ function watchForm() {
     // reset state dropdown error
     stateDropdown.addEventListener('click', () => {
         stateDropdown.classList.remove('state-dropdown-error')
-        errorMsg.classList.add('hidden')
+        formMsg.classList.add('hidden')
     })
     // submit state
     submitBtn.addEventListener('click', (e) => {
@@ -425,6 +468,7 @@ function watchForm() {
         if (stateSearch === 'none-selected') {
             stateDropdown.classList.add('state-dropdown-error')
         } else {
+            handleGetParksLoad()
             getParks(stateSearch)
         }
     })
