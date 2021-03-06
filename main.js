@@ -342,7 +342,7 @@ function renderPageLoader() {
     setTimeout(() => {
         pageLoaderDiv.classList.remove('loader-active')
         pageLoaderDiv.innerHTML = ''
-    }, 1000);
+    }, 4000);
 }
 
 
