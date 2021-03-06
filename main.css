@@ -70,7 +70,7 @@ h2 {
 }
 
 .search-line, 
-.error-message {
+.form-msg {
     font-family: 'IBM Plex Sans',sans-serif;
     font-weight: 300;
     font-size: 1.5rem;
@@ -250,11 +250,19 @@ h3 {
     background: red;
 }
 
-.error-message {
+.form-msg {
     position: fixed;
-    top: 4rem;
+    bottom: 6rem;
     left: 50%;
     transform: translate(-50%);
+}
+
+.to-top-btn {
+    position: fixed;
+    bottom: 6rem;
+    left: 50%;
+    transform: translate(-50%);
+    z-index: 2;
 }
 
 
@@ -283,8 +291,8 @@ h3 {
     z-index: 1;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-gap: 2rem;
-    padding: 4rem 0;
+    grid-gap: 5vw 2rem;
+    padding: 4rem 0 15rem;
 }
 
 .park-card {
@@ -361,6 +369,12 @@ h3 {
         "l-nps l-nps";
 }
 
+.park-links-cam {
+    grid-template-areas:
+        "l-dir l-fee"
+        "l-nps l-cam";
+}
+
 .link {
     display: flex;
     justify-content: center;
@@ -434,7 +448,7 @@ h3 {
 /* ===== LOADER ===== */
 
 .loader {
-    display: none;
+    display: flex;
     justify-content: center;
     align-items: center;
     z-index: 5;
@@ -444,28 +458,56 @@ h3 {
     height: 100%;
     background: white;
     opacity: 0;
-    animation-name: loader-quote;
-    animation-duration: 4s;
+    animation-name: loader;
+    animation-duration: 5s;
 }
 
-@keyframes loader-quote {
-    0% {opacity: 0;}
-    12.5% {opacity: 1;}
-    87.5% {opacity: 1;}
+@keyframes loader {
+    0% {opacity: 1;}
+    90% {opacity: 1;}
     100% {opacity: 0;}
-}
-
-.loader-active {
-    display: flex;
 }
 
 .quote-wrapper {
     max-width: 425px;
+    opacity: 0;
+    animation-name: loader-quote;
+    animation-duration: 5s;
+}
+
+@keyframes loader-quote {
+    0% {opacity: 0;}
+    10% {opacity: 1;}
+    80% {opacity: 1;}
+    90% {opacity: 0;}
 }
 
 .loader-author {
     margin: 2rem 0;
 }
+
+.form-msg {
+    opacity: 0;
+    animation-name: form-msg;
+    animation-duration: 0.5s;
+}
+
+@keyframes form-msg {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+}
+
+.form-msg-fade-out {
+    opacity: 1;
+    animation-name: form-msg-fade-out;
+    animation-duration: 0.5s;
+}
+
+@keyframes form-msg-fade-out {
+    0% {opacity: 1;}
+    100% {opacity: 0;}
+}
+
 
 /* ===== HIDDEN ===== */
 
