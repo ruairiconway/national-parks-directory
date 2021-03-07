@@ -259,7 +259,7 @@ function handleCardPara(park) {
     return descHtml
 }
 
-function scrollToDirectoryTop() {
+function scrollToDirectory() {
     window.scroll({
         top: landingWrapper.scrollHeight,
         left: 0,
@@ -268,20 +268,19 @@ function scrollToDirectoryTop() {
 }
 
 function handleScroll() {
-    handleRenderDirectorySuccess()
     document.querySelector('#js-to-top-button').addEventListener('click', () => {
-        scrollToDirectoryTop()
+        scrollToDirectory()
     })
     window.addEventListener('scroll', () => {
         // form shift
-        const scrollFormTarget = landingWrapper.scrollHeight
+        const scrollFormTarget = landingWrapper.scrollHeight + 50
         if (scrollFormTarget < window.scrollY) {
             stateForm.classList.add('state-form-mini')
         } else {
             stateForm.classList.remove('state-form-mini')
         }
         // scroll to top
-        const scrollToTopTarget = landingWrapper.scrollHeight + (document.querySelector('.directory-list').scrollHeight / 2)
+        const scrollToTopTarget = landingWrapper.scrollHeight + 500 //(document.querySelector('.directory-list').scrollHeight / 2)
         if (scrollToTopTarget < window.scrollY) {
             document.querySelector('#js-to-top-button').classList.remove('hidden')
         } else {
@@ -290,20 +289,22 @@ function handleScroll() {
     })
 }
 
-function handleRenderDirectorySuccess() {
-    formMsg.classList.add('form-msg-fade-out')
-    scrollToDirectoryTop()
-    setTimeout(() => {
-        formMsg.classList.add('hidden')
-        formMsg.classList.remove('form-msg-fade-out')
-    }, 500)
-}
-
-function handleGetParksLoad() {
+function showGetParksLoad() {
     let loadHtml = `
     <p class="form-msg msg-load">Finding parks...</p>`
     formMsg.innerHTML = loadHtml
     formMsg.classList.remove('hidden')
+    formMsg.classList.add('form-msg-fade-in')
+    setTimeout(() => {
+        formMsg.classList.remove('form-msg-fade-in')
+    }, 500)
+}
+
+function hideGetParksLoad() {
+    formMsg.classList.add('form-msg-fade-out')
+    setTimeout(() => {
+        formMsg.classList.add('hidden')
+    }, 500)
 }
 
 function handleGetParksError() {
@@ -416,13 +417,16 @@ async function getWebcam(parkCode) {
 }
 
 async function getParks(state) {
+    showGetParksLoad()
     try {
         const parksPromise = await fetch(`${npsApiUrl}/parks?stateCode=${state}`)
         const parksJson = await parksPromise.json()
         if (parksJson.total === 0) {
             handleGetParksError()
         } else {
-            renderDirectory(state, parksJson)
+            await renderDirectory(state, parksJson)
+            hideGetParksLoad()
+            scrollToDirectory()
         }
     } catch (err) {
         handleGetParksError()
@@ -468,7 +472,6 @@ function watchForm() {
         if (stateSearch === 'none-selected') {
             stateDropdown.classList.add('state-dropdown-error')
         } else {
-            handleGetParksLoad()
             getParks(stateSearch)
         }
     })

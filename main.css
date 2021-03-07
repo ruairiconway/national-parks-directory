@@ -255,6 +255,29 @@ h3 {
     bottom: 6rem;
     left: 50%;
     transform: translate(-50%);
+    opacity: 1;
+}
+
+.form-msg-fade-in {
+    opacity: 1;
+    animation-name: form-msg-fade-in;
+    animation-duration: 0.5s;
+}
+
+@keyframes form-msg-fade-in {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+}
+
+.form-msg-fade-out {
+    opacity: 0;
+    animation-name: form-msg-fade-out;
+    animation-duration: 0.5s;
+}
+
+@keyframes form-msg-fade-out {
+    0% {opacity: 1;}
+    100% {opacity: 0;}
 }
 
 .to-top-btn {
@@ -484,28 +507,6 @@ h3 {
 
 .loader-author {
     margin: 2rem 0;
-}
-
-.form-msg {
-    opacity: 0;
-    animation-name: form-msg;
-    animation-duration: 0.5s;
-}
-
-@keyframes form-msg {
-    0% {opacity: 0;}
-    100% {opacity: 1;}
-}
-
-.form-msg-fade-out {
-    opacity: 1;
-    animation-name: form-msg-fade-out;
-    animation-duration: 0.5s;
-}
-
-@keyframes form-msg-fade-out {
-    0% {opacity: 1;}
-    100% {opacity: 0;}
 }
 
 
