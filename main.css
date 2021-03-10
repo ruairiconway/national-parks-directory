@@ -84,6 +84,7 @@ h2 {
     font-size: 2rem;
     text-transform: capitalize;
     letter-spacing: 1px;
+    height: 50px;
 }
 
 h3 {
@@ -217,21 +218,30 @@ h3 {
 .state-form-mini {
     justify-content: space-around;
     position: fixed;
+    /* height: 75px; */
     width: 100%;
-    bottom: 0;
+    bottom: -50px;
     right: 50%;
     transform: translate(50%);
-    padding: 1rem;
+    /* padding: 1rem; */
     z-index: 2;
+    transition: bottom 0.5s;
+}
+
+.show-state-form-mini {
+    bottom: 0;
 }
 
 @media screen and (min-width: 650px) {
 
     .state-form-mini {
         width: 300px;
-        bottom: 4rem;
         right: 4rem;
         transform: translate(0);
+    }
+
+    .show-state-form-mini {
+        bottom: 4rem;
     }
 
 }
@@ -280,14 +290,6 @@ h3 {
     100% {opacity: 0;}
 }
 
-.to-top-btn {
-    position: fixed;
-    bottom: 6rem;
-    left: 50%;
-    transform: translate(-50%);
-    z-index: 2;
-}
-
 .card-fade-out {
     opacity: 0;
     animation-name: card-fade-out;
@@ -310,26 +312,18 @@ h3 {
     100% {opacity: 1;}
 }
 
-.scroll-to-top-fade-in {
-    opacity: 1;
-    animation-name: scroll-to-top-fade-in;
-    animation-duration: 0.5s;
+.to-top-btn {
+    position: fixed;
+    height: 25px;
+    bottom: -25px;
+    left: 50%;
+    transform: translate(-50%);
+    z-index: 2;
+    transition: bottom 0.5s;
 }
 
-@keyframes scroll-to-top-fade-in {
-    0% {opacity: 0;}
-    100% {opacity: 1;}
-}
-
-.scroll-to-top-fade-out {
-    opacity: 0;
-    animation-name: scroll-to-top-fade-out;
-    animation-duration: 0.5s;
-}
-
-@keyframes scroll-to-top-fade-out {
-    0% {opacity: 1;}
-    100% {opacity: 0;}
+.show-to-top-btn {
+    bottom: 4rem;
 }
 
 
