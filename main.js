@@ -30,11 +30,14 @@ function setCardState() {
 }
 
 function toggleCard(card) {
+
     const eleFront = [
+        '.park-name',
         '.park-code',
         '.park-topics',
     ]
     const eleBack = [
+        '.park-name',
         '.park-contact',
         '.park-address',
         '.park-alert',
@@ -42,25 +45,51 @@ function toggleCard(card) {
         '.park-hours',
         '.park-para',
     ]
+
     if (card.classList.contains('card-front')) {
         for (let ele of eleFront) {
-            card.querySelector(ele).classList.add('hidden')
+            card.querySelector(ele).classList.add('card-fade-out')
+            setTimeout(() => {
+                card.querySelector(ele).classList.add('hidden')
+                card.querySelector(ele).classList.remove('card-fade-out')
+            }, 500)
         }
         for (let ele of eleBack) {
-            card.querySelector(ele).classList.remove('hidden')
+            setTimeout(() => {
+                card.querySelector(ele).classList.add('card-fade-in')
+                card.querySelector(ele).classList.remove('hidden')
+                setTimeout(() => {
+                    card.querySelector(ele).classList.remove('card-fade-in')
+                }, 500)
+            }, 500)
         }
-        card.classList.remove('card-front')
-        card.classList.add('card-back')
+        setTimeout(() => {
+            card.classList.remove('card-front')
+            card.classList.add('card-back')
+        }, 500)
 
     } else if (card.classList.contains('card-back')) {
         for (let ele of eleFront) {
-            card.querySelector(ele).classList.remove('hidden')
+            setTimeout(() => {
+                card.querySelector(ele).classList.add('card-fade-in')
+                card.querySelector(ele).classList.remove('hidden')
+                setTimeout(() => {
+                    card.querySelector(ele).classList.remove('card-fade-in')
+                }, 500)
+            }, 500)
         }
         for (let ele of eleBack) {
-            card.querySelector(ele).classList.add('hidden')
+            card.querySelector(ele).classList.add('card-fade-out')
+            setTimeout(() => {
+                card.querySelector(ele).classList.add('hidden')
+                card.querySelector(ele).classList.remove('card-fade-out')
+            }, 500)
         }
-        card.classList.remove('card-back')
-        card.classList.add('card-front')
+        setTimeout(() => {
+            card.classList.remove('card-back')
+            card.classList.add('card-front')
+            card.querySelector('.park-name').classList.remove('hidden')
+        }, 500)
     }
 }
 

@@ -288,6 +288,28 @@ h3 {
     z-index: 2;
 }
 
+.card-fade-out {
+    opacity: 0;
+    animation-name: card-fade-out;
+    animation-duration: 0.5s;
+}
+
+@keyframes card-fade-out {
+    0% {opacity: 1;}
+    100% {opacity: 0;}
+}
+
+.card-fade-in {
+    opacity: 1;
+    animation-name: card-fade-in;
+    animation-duration: 0.5s;
+}
+
+@keyframes card-fade-in {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+}
+
 
 /* ===== DIRECTORY ===== */
 
