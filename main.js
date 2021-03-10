@@ -8,6 +8,7 @@ const submitBtn = document.getElementById('js-submit-btn')
 const formMsg = document.getElementById('js-form-msg')
 const directoryWrapper = document.getElementById('js-directory-wrapper')
 const pageLoaderDiv = document.getElementById('js-page-loader')
+const toTopBtn = document.getElementById('js-to-top-btn')
 let alertHtml = ''
 let webcamHtml = ''
 
@@ -297,31 +298,31 @@ function scrollToDirectory() {
 }
 
 function handleScroll() {
-    document.querySelector('#js-to-top-button').addEventListener('click', () => {
+    toTopBtn.addEventListener('click', () => {
         scrollToDirectory()
     })
-    window.addEventListener('scroll', () => {
-        // form shift
-        const scrollFormTarget = landingWrapper.scrollHeight + 50
-        if (scrollFormTarget < window.scrollY) {
+    window.addEventListener("scroll", () => {
+        // scroll to top
+        const scrollToTopTarget = document.querySelector('.directory-list').scrollHeight
+        if (scrollToTopTarget - 150 < window.scrollY) {
+            toTopBtn.classList.add('show-to-top-btn')
+        } else {
+            toTopBtn.classList.remove('show-to-top-btn')
+        }
+        // mini form
+        const scrollFormTarget = landingWrapper.scrollHeight
+        if (scrollFormTarget - 150 < window.scrollY) {
             stateForm.classList.add('state-form-mini')
+            if (scrollFormTarget + 150 < window.scrollY) {
+                stateForm.classList.add('show-state-form-mini')
+            } else {
+                stateForm.classList.remove('show-state-form-mini')
+            }
         } else {
             stateForm.classList.remove('state-form-mini')
         }
-        // scroll to top
-        const scrollToTopTarget = landingWrapper.scrollHeight + 1000
-        if (scrollToTopTarget < window.scrollY) {
-            document.querySelector('#js-to-top-button').classList.add('scroll-to-top-fade-in')
-            document.querySelector('#js-to-top-button').classList.remove('hidden')
-        } else {
-            document.querySelector('#js-to-top-button').classList.remove('scroll-to-top-fade-in')
-            document.querySelector('#js-to-top-button').classList.add('scroll-to-top-fade-out')
-            setTimeout(() => {
-                document.querySelector('#js-to-top-button').classList.remove('scroll-to-top-fade-out')
-                document.querySelector('#js-to-top-button').classList.add('hidden')
-            }, 500)
-        }
     })
+
 }
 
 function showGetParksLoad() {
