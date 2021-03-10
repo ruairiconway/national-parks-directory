@@ -310,6 +310,28 @@ h3 {
     100% {opacity: 1;}
 }
 
+.scroll-to-top-fade-in {
+    opacity: 1;
+    animation-name: scroll-to-top-fade-in;
+    animation-duration: 0.5s;
+}
+
+@keyframes scroll-to-top-fade-in {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+}
+
+.scroll-to-top-fade-out {
+    opacity: 0;
+    animation-name: scroll-to-top-fade-out;
+    animation-duration: 0.5s;
+}
+
+@keyframes scroll-to-top-fade-out {
+    0% {opacity: 1;}
+    100% {opacity: 0;}
+}
+
 
 /* ===== DIRECTORY ===== */
 

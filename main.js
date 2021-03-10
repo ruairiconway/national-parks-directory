@@ -309,11 +309,17 @@ function handleScroll() {
             stateForm.classList.remove('state-form-mini')
         }
         // scroll to top
-        const scrollToTopTarget = landingWrapper.scrollHeight + 500 //(document.querySelector('.directory-list').scrollHeight / 2)
+        const scrollToTopTarget = landingWrapper.scrollHeight + 1000
         if (scrollToTopTarget < window.scrollY) {
+            document.querySelector('#js-to-top-button').classList.add('scroll-to-top-fade-in')
             document.querySelector('#js-to-top-button').classList.remove('hidden')
         } else {
-            document.querySelector('#js-to-top-button').classList.add('hidden')
+            document.querySelector('#js-to-top-button').classList.remove('scroll-to-top-fade-in')
+            document.querySelector('#js-to-top-button').classList.add('scroll-to-top-fade-out')
+            setTimeout(() => {
+                document.querySelector('#js-to-top-button').classList.remove('scroll-to-top-fade-out')
+                document.querySelector('#js-to-top-button').classList.add('hidden')
+            }, 500)
         }
     })
 }
