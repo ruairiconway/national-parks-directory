@@ -18,5 +18,6 @@ Using the National Parks Service API, create a directory that uses state postal 
 
 ## Future Edits
 
-- Additional park info along with each result
+- add google map links to addresses
+- add loading icon while getParks runs
 - Add in 'parks near me' functionality
