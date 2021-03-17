@@ -194,7 +194,10 @@ function handleCardContact(contact) {
 function handleCardHours(operatingHours) {
     let hoursHtml = ''
     if (operatingHours.length === 0) {
-        hoursHtml = `<p>no hours listed</p>`
+        hoursHtml = `
+            <div class="park-hours">
+                <p>no hours listed</p>
+            </div>`
     } else {
         let hours = operatingHours[0].standardHours
         hoursHtml = `
@@ -313,7 +316,7 @@ function handleScroll() {
         const scrollFormTarget = landingWrapper.scrollHeight
         if (scrollFormTarget - 150 < window.scrollY) {
             stateForm.classList.add('state-form-mini')
-            if (scrollFormTarget + 150 < window.scrollY) {
+            if (scrollFormTarget < window.scrollY) {
                 stateForm.classList.add('show-state-form-mini')
             } else {
                 stateForm.classList.remove('show-state-form-mini')
