@@ -42,7 +42,7 @@ font-family: 'IBM Plex Sans', sans-serif;
 .loader-content {
     font-family: 'IBM Plex Sans',sans-serif;
     font-weight: 300;
-    font-size: 1.5rem;
+    font-size: 1.35rem;
     letter-spacing: 1px;
     line-height: 1.5;
 }
@@ -73,7 +73,7 @@ h2 {
 .form-msg {
     font-family: 'IBM Plex Sans',sans-serif;
     font-weight: 300;
-    font-size: 1.5rem;
+    font-size: 1.35rem;
     letter-spacing: 1px;
     line-height: 1.5;
 }
@@ -158,6 +158,12 @@ h3 {
 
     h1 {
         font-size: 7rem;
+    }
+
+    .loader-content,
+    .search-line, 
+    .form-msg {
+        font-size: 1.5rem;
     }
 
 }
@@ -395,7 +401,7 @@ h3 {
 /* ===== DIRECTORY ===== */
 
 .directory-wrapper {
-    padding: 0 5rem;
+    padding: 0 4rem;
 }
 
 .directory-header {
@@ -403,9 +409,23 @@ h3 {
     position: sticky;
     top: 0;
     display: grid;
-    grid-template-columns: 50% 1fr 1fr;
+    grid-template: auto auto auto / 1fr;
+    row-gap: 5rem;
     padding: 5rem 0;
     z-index: 0;
+}
+
+@media screen and (min-width:775px) {
+
+    .directory-header {
+        grid-template: 1fr / 50% 1fr 1fr;
+        row-gap: 0;
+    }
+
+    .directory-wrapper {
+        padding: 0 5rem;
+    }
+
 }
 
 .directory-header-p {
