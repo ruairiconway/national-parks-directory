@@ -195,11 +195,12 @@ h3 {
 /* HEADER */
 .landing-wrapper {
     height: 100vh;
-    display: grid;
-    grid-template-rows: auto auto;
+    /* display: grid;
+    grid-template-rows: auto auto; */
 }
 
 .title-wrapper {
+    height: 40%;
     display: flex;
     flex-flow: row nowrap;
     justify-content: center;
@@ -235,10 +236,13 @@ h3 {
 @media all and (min-width: 950px) {
 
     .landing-wrapper {
+        display: grid;
+        grid-template-rows: auto auto;
         grid-template: 1fr / 1fr 1fr;
     }
 
     .title-wrapper {
+        height: unset;
         justify-content: flex-end;
         padding: 0 0 0 4rem;
     }
@@ -260,6 +264,7 @@ h3 {
 /* SEARCH */
 
 .search-wrapper {
+    height: 60%;
     display: flex;
     flex-flow: column nowrap;
     justify-content: center;
@@ -279,6 +284,7 @@ h3 {
 @media all and (min-width: 950px) {
     
     .search-wrapper {
+        height: unset;
         padding: 4rem;
         background: none;
     }
