@@ -204,12 +204,16 @@ h3 {
     flex-flow: row nowrap;
     justify-content: center;
     align-items: center;
-    padding: 0 2rem;
+    padding: 2rem;
 }
 
 .title {
     position: relative;
     width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    height: 100%;
+    justify-content: space-between;
 }
 
 .title-span {
