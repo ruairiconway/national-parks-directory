@@ -278,14 +278,14 @@ h3 {
 }
 
 .state-form-mini {
-    justify-content: space-around;
+    justify-content: space-between;
     position: fixed;
     /* height: 75px; */
     width: 100%;
     bottom: -50px;
     right: 50%;
     transform: translate(50%);
-    /* padding: 1rem; */
+    padding: 0 2rem;
     z-index: 2;
     transition: bottom 0.5s;
 }
@@ -386,8 +386,9 @@ h3 {
 
 .to-top-btn {
     position: fixed;
-    height: 25px;
-    top: -25px;
+    height: 50px;
+    width: 50px;
+    top: -50px;
     left: 50%;
     transform: translate(-50%);
     z-index: 2;
@@ -395,7 +396,7 @@ h3 {
 }
 
 .show-to-top-btn {
-    top: 4rem;
+    top: 0;
 }
 
 
