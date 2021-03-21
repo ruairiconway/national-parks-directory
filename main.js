@@ -314,7 +314,7 @@ function handleScroll() {
         }
         // mini form
         const scrollFormTarget = landingWrapper.scrollHeight
-        if (scrollFormTarget - 150 < window.scrollY) {
+        if (scrollFormTarget - 50 < window.scrollY) {
             stateForm.classList.add('state-form-mini')
             if (scrollFormTarget < window.scrollY) {
                 stateForm.classList.add('show-state-form-mini')
