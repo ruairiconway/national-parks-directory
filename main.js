@@ -36,6 +36,7 @@ function toggleCard(card) {
         '.park-name',
         '.park-code',
         '.park-topics',
+        '.park-img',
     ]
     const eleBack = [
         '.park-name',
@@ -110,7 +111,6 @@ function formatPhoneNum(num) {
 // =========== HANDLE ===========
 
 function handleCardTopics(topics) {
-    console.log(topics)
     if (topics.length === 0) { // no topics exist
         let topicsHtml = `
             <div class="park-topics"></div>`
@@ -317,7 +317,7 @@ function handleScroll() {
         }
         // mini form
         const scrollFormTarget = landingWrapper.scrollHeight
-        if (scrollFormTarget - 50 < window.scrollY) {
+        if (scrollFormTarget - 25 < window.scrollY) {
             stateForm.classList.add('state-form-mini')
             if (scrollFormTarget < window.scrollY) {
                 stateForm.classList.add('show-state-form-mini')
@@ -356,6 +356,18 @@ function handleGetParksError() {
     formMsg.classList.remove('hidden')
 }
 
+function handleCardImg(images) {
+    if (images.length > 0) {
+        const imgIndex = getRanNum(images.length)
+        const imgUrl = images[imgIndex].url
+        let imgHtml = `
+            <div class="park-img" style="background-image:url('${imgUrl}')"></div>`
+        return imgHtml
+    } else {
+        return ''
+    }
+}
+
 
 // =========== RENDER ===========
 
@@ -372,6 +384,7 @@ function renderDirectoryHeader(state, total) {
 function renderParkCard(park) {
     let parkCardHtml = `
     <div class="park-card card-front">
+        ${handleCardImg(park.images)}
         <h4 class="park-name">${park.fullName}</h4>
         <p class="park-lat">LAT: ${park.latitude}</p>
         <p class="park-long">LON: ${park.longitude}</p>
