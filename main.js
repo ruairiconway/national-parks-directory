@@ -110,8 +110,11 @@ function formatPhoneNum(num) {
 // =========== HANDLE ===========
 
 function handleCardTopics(topics) {
+    console.log(topics)
     if (topics.length === 0) { // no topics exist
-        return ''
+        let topicsHtml = `
+            <div class="park-topics"></div>`
+        return topicsHtml
     } else if (topics.length === 1) { // 1 topics exist
         let topicsHtml = `
             <div class="park-topics">
