@@ -701,7 +701,7 @@ h3 {
     justify-content: center;
     align-items: center;
     z-index: 5;
-    position: absolute;
+    position: fixed;
     top: 0;
     width: 100%;
     height: 100%;
