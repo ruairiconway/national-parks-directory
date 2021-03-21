@@ -183,7 +183,7 @@ h3 {
     flex-flow: row nowrap;
     justify-content: center;
     align-items: center;
-    padding: 0 4rem;
+    padding: 0 2rem;
 }
 
 .title {
@@ -245,7 +245,7 @@ h3 {
 }
 
 .search-details {
-    padding: 4rem;
+    padding: 2rem;
 }
 
 .search-line {
@@ -262,6 +262,7 @@ h3 {
     .search-details {
         max-width: 425px;
         background: lightgrey;
+        padding: 4rem;
     }
 
     .search-line {
@@ -386,22 +387,22 @@ h3 {
 .to-top-btn {
     position: fixed;
     height: 25px;
-    bottom: -25px;
+    top: -25px;
     left: 50%;
     transform: translate(-50%);
     z-index: 2;
-    transition: bottom 0.5s;
+    transition: top 0.5s;
 }
 
 .show-to-top-btn {
-    bottom: 4rem;
+    top: 4rem;
 }
 
 
 /* ===== DIRECTORY ===== */
 
 .directory-wrapper {
-    padding: 0 4rem;
+    padding: 0 2rem;
 }
 
 .directory-header {
@@ -444,15 +445,15 @@ h3 {
 .park-card {
     margin: auto;
     background: lightgrey;
-    width: 450px;
-    height: 450px;
+    max-width: 450px;
+    min-height: 450px;
     display: grid;
     position: relative;
     padding: 2rem;
 }
 
 .park-card.card-front {
-    grid-template: 50% 2fr 1fr / auto;
+    grid-template: 2fr 1fr 1fr / auto;
     grid-template-areas:
         "p-cod"
         "p-nam"
@@ -460,7 +461,7 @@ h3 {
 }
 
 .park-card.card-back {
-    grid-template: minmax(auto,20%) auto 1fr 20% 1fr / auto 1fr minmax(auto,40%);
+    grid-template: minmax(auto,20%) auto 2fr 2fr 3fr / auto 1fr minmax(auto,40%);
     grid-gap: 2rem;
     grid-template-areas:
         "p-nam p-nam p-nam"
@@ -476,6 +477,14 @@ h3 {
 
 .park-card:nth-child(odd) {
     margin-bottom: 0;
+}
+
+@media screen and (min-width: 550px) {
+
+    .park-card {
+        width: 450px;
+    }
+
 }
 
 @media screen and (min-width: 1026px) {
