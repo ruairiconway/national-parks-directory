@@ -372,7 +372,7 @@ function renderParkCard(park) {
         <h4 class="park-name">${park.fullName}</h4>
         <p class="park-lat">LAT: ${park.latitude}</p>
         <p class="park-long">LON: ${park.longitude}</p>
-        <button type="button" class="card-switch">+</button>
+        <button type="button" class="card-switch"><div class="card-switch-icon">+</div></button>
         <p class="park-code">${park.parkCode}</p>
         ${handleCardTopics(park.topics)}
         ${handleCardContact(park.contacts)}
@@ -493,6 +493,7 @@ function watchParkCard() {
             handleCardAlert(card)
             handleCardWebcam(card)
             toggleCard(card)
+            card.querySelector('.card-switch-icon').classList.toggle('card-switch-icon-rotate')
         })
     }
 }
