@@ -28,6 +28,37 @@ ul, ol, li {
 }
 
 
+/* ===== COLOR ===== */
+
+/* WHITE        #F5F1ED */
+/* DARK CLAY    #E76236 */
+/* LIGHT CLAY   #EA7148 */
+/* BLACK        #210203 */
+
+/* CARD */
+/* TEXT */
+/* LAT/LONG */
+/* BTN BG */
+/* BTN TEXT */
+/* LINKS */
+
+
+:root {
+    /* MAIN */
+    --bg-primary: #E76236;
+    --bg-content: #EA7148;
+    --text-primary: #F5F1ED;
+    --btn-primary: #210203;
+    /* PARK CARD */
+    --card-bg: #F5F1ED;
+    --card-txt: #210203;
+    --card-btn-bg: #210203;
+    --card-btn-ct: #F5F1ED;
+    --card-a: #2727F4;
+    --card-a-hvr: #0C0CEB;
+}
+
+
 /* ===== TYPESTYLES ===== */
 
 html {
@@ -38,6 +69,10 @@ html {
 font-family: 'Montserrat', sans-serif;
 font-family: 'IBM Plex Sans', sans-serif;
 */
+
+body {
+    color: var(--text-primary);
+}
 
 .loader-content {
     font-family: 'IBM Plex Sans',sans-serif;
@@ -85,6 +120,7 @@ h2 {
     font-size: 1.5rem;
     text-transform: capitalize;
     letter-spacing: 1px;
+    cursor: pointer;
 }
 
 h3 {
@@ -95,16 +131,12 @@ h3 {
     line-height: 0.75;
 }
 
-@media all and (min-width: 1026px) {
+@media all and (min-width: 950px) {
 
     h1 {
         line-height: 1;
     }
-
-}
-
-@media all and (min-width: 950px) {
-
+    
     .form-input {
         font-size: 2rem;
         height: 50px;
@@ -214,6 +246,10 @@ h3 {
     height: 100vh;
     display: grid;
     grid-template-rows: 1fr auto;
+    background-image: url("./relief-bg.svg");
+    background-size: cover;
+    background-color: var(--bg-primary);
+    background-position: center;
 }
 
 .title-wrapper {
@@ -242,7 +278,7 @@ h3 {
     position: absolute;
     margin: 0;
     transform-origin: left;
-    transform: rotate(270deg) translate(-100%);
+    transform: rotate(270deg) translate(-100%, 75%);
 }
 
 @media all and (min-width: 950px) {
@@ -281,11 +317,12 @@ h3 {
     justify-content: center;
     align-items: center;
     padding: 0;
-    background: lightgrey;
+    background: var(--bg-content);
 }
 
 .search-details {
     padding: 2rem;
+    background: var(--bg-content);
 }
 
 .search-line {
@@ -301,7 +338,6 @@ h3 {
 
     .search-details {
         max-width: 425px;
-        background: lightgrey;
         padding: 4rem;
     }
 
@@ -325,7 +361,7 @@ h3 {
     right: 50%;
     transform: translate(50%);
     padding: 1rem 2rem;
-    background: white;
+    background: var(--bg-primary);
     z-index: 2;
     transition: bottom 0.5s;
 }
@@ -349,6 +385,12 @@ h3 {
 
 }
 
+.form-input {
+    border: none;
+    background: var(--btn-primary);
+    color: var(--text-primary);
+}
+
 .state-dropdown {
     width: 47.5%;
     padding: 1rem;
@@ -357,6 +399,13 @@ h3 {
 .state-submit {
     width: 45%;
     padding: 1rem;
+    transition: background-color 0.5s;
+}
+
+.state-submit:hover,
+.state-submit:focus {
+    background: var(--text-primary);
+    color: var(--btn-primary);
 }
 
 .state-dropdown-error {
@@ -370,7 +419,7 @@ h3 {
     padding: 1rem;
     transform: translate(-50%);
     opacity: 1;
-    background: lightgray;
+    background: var(--btn-primary);
 }
 
 @media all and (min-width: 950px) {
@@ -433,7 +482,19 @@ h3 {
     left: 50%;
     transform: translate(-50%);
     z-index: 2;
-    transition: top 0.5s;
+    font-size: 4rem;
+    line-height: 1.6;
+    border: none;
+    background: var(--btn-primary);
+    color: var(--text-primary);
+    transition: top 0.5s, background-color 0.5s;
+    cursor: pointer;
+}
+
+.to-top-btn:hover,
+.to-top-btn:focus {
+    background: var(--text-primary);
+    color: var(--btn-primary);
 }
 
 .show-to-top-btn {
@@ -445,6 +506,7 @@ h3 {
 
 .directory-wrapper {
     padding: 0 2rem;
+    background: var(--bg-primary);
 }
 
 .directory-header {
@@ -492,8 +554,9 @@ h3 {
     display: grid;
     position: relative;
     padding: 2rem;
-    background: orange;
     z-index: 1;
+    background: var(--card-bg);
+    color: var(--card-txt);
 }
 
 .park-card.card-front {
@@ -570,14 +633,17 @@ h3 {
     top: 0;
     width: 50px;
     height: 50px;
-    background: none;
+    color: var(--card-btn-bg);
+    border: none;
     z-index: 4;
+    cursor: pointer;
 }
 
 .card-switch-icon {
     transform-origin: center;
     transform: rotate(0);
     transition: transform 0.5s;
+    font-size: 4rem;
 }
 
 .card-switch-icon-rotate {
@@ -586,12 +652,12 @@ h3 {
 
 .park-code {
     grid-area: p-cod;
-    color: white;
     z-index: 3;
 }
 
 .park-name {
     grid-area: p-nam;
+    margin-right: 25px;
     z-index: 3;
 }
 
@@ -601,9 +667,13 @@ h3 {
     z-index: 3;
 }
 
-.park-contacts {
+.park-contact {
     grid-area: p-con;
     z-index: 3;
+}
+
+.park-contact a {
+    display: block;
 }
 
 .park-address {
@@ -614,7 +684,7 @@ h3 {
 
 .park-alert {
     grid-area: p-ale;
-    align-self: end;
+    align-self: center;
     z-index: 3;
 }
 
@@ -696,7 +766,7 @@ h3 {
 .park-long {
     position: absolute;
     width: 100%;
-    color: lightgray;
+    color: var(--text-primary);
     z-index: 0;
 }
 
@@ -717,11 +787,35 @@ h3 {
     position: absolute;
     background-position: center;
     background-size: cover;
-    background-color: orange;
+    background-color: var(--btn-primary);
     background-blend-mode: soft-light;
     width: 100%;
     height: 100%;
     z-index: 2;
+}
+
+.park-card a {
+    color: var(--card-a);
+    text-decoration: none;
+    transition: color 0.5s;
+}
+
+.park-card a:hover,
+.park-card a:focus {
+    color: var(--card-a-hvr);
+    text-decoration: underline;
+}
+
+.park-links a {
+    background: var(--card-btn-bg);
+    color: var(--card-btn-ct);
+    text-decoration: none;
+    transition: color 0.25s, background-color 0.25s;
+}
+
+.park-links a:hover,
+.park-links a:focus {
+    background: var(--card-bg);
 }
 
 
@@ -736,7 +830,10 @@ h3 {
     top: 0;
     width: 100%;
     height: 100%;
-    background: white;
+    background-image: url(./relief-bg.svg);
+    background-size: cover;
+    background-position: center;
+    background-color: var(--bg-primary);
     opacity: 0;
     animation-name: loader;
     animation-duration: 5s;
@@ -753,7 +850,8 @@ h3 {
     opacity: 0;
     animation-name: loader-quote;
     animation-duration: 5s;
-    padding: 0 4rem;
+    padding: 4rem;
+    background: var(--bg-content);
 }
 
 @keyframes loader-quote {
