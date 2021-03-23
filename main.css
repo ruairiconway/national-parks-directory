@@ -477,13 +477,11 @@ h3 {
 .to-top-btn {
     position: fixed;
     height: 50px;
-    width: 50px;
     top: -50px;
     left: 50%;
     transform: translate(-50%);
     z-index: 2;
     font-size: 4rem;
-    line-height: 1.6;
     border: none;
     background: var(--btn-primary);
     color: var(--text-primary);
@@ -495,6 +493,14 @@ h3 {
 .to-top-btn:focus {
     background: var(--text-primary);
     color: var(--btn-primary);
+}
+
+@media all and (min-width: 960px) {
+
+    .to-top-btn {
+        width: 50px;
+    }
+
 }
 
 .show-to-top-btn {
