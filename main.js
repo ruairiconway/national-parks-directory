@@ -36,7 +36,7 @@ function toggleCard(card) {
         '.park-name',
         '.park-code',
         '.park-topics',
-        // '.park-img',
+        '.park-img',
     ]
     const eleBack = [
         '.park-name',
@@ -388,10 +388,10 @@ function renderDirectoryHeader(state, total) {
     return directoryHeaderHtml
 }
 
-// ${handleCardImg(park.images)}
 function renderParkCard(park) {
     let parkCardHtml = `
     <div class="park-card card-front">
+        ${handleCardImg(park.images)}
         <h4 class="park-name">${park.fullName}</h4>
         <p class="park-lat">LAT: ${park.latitude}</p>
         <p class="park-long">LON: ${park.longitude}</p>
