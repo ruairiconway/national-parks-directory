@@ -36,7 +36,7 @@ function toggleCard(card) {
         '.park-name',
         '.park-code',
         '.park-topics',
-        '.park-img',
+        // '.park-img',
     ]
     const eleBack = [
         '.park-name',
@@ -144,16 +144,24 @@ function handleCardTopics(topics) {
 }
 
 function handleCardAddress(addresses) {
-    for (let address of addresses) {
-        if (address.type === 'Physical') {
-            let addressHtml = `
-                <div class="park-address">
-                    <p>${address.city}</p>
-                    <p>${address.line1}</p>
-                    <p>${address.postalCode}, ${address.stateCode}</p>
-                </div>`
+    if(addresses.length > 0) {
+        for (let address of addresses) {
+            if (address.type === 'Physical') {
+                let addressHtml = `
+                    <div class="park-address">
+                        <p>${address.city}</p>
+                        <p>${address.line1}</p>
+                        <p>${address.postalCode}, ${address.stateCode}</p>
+                    </div>`
                 return addressHtml
+            } else {
+                return ''
+            }
         }
+    } else {
+        let addressHtml = `
+            <div class="park-address"></div>`
+        return addressHtml
     }
 }
 
@@ -161,21 +169,20 @@ function handleCardContact(contact) {
     // email
     let email = ''
     let emailHtml = ''
-    // const includesDomain = contact.emailAddresses[0].emailAddress.includes('@nps.gov')
-    if (contact.emailAddresses.length > 0) { // && includesDomain
-        email = contact.emailAddresses[0].emailAddress // email
+    if (contact.emailAddresses.length > 0) {
+        email = contact.emailAddresses[0].emailAddress
         if (email === '0@0') {
             emailHtml = ''
         } else {
             emailHtml = `
-            <a href="${email}">${email}</a>`
+            <a href="mailto:${email}">${email}</a>`
         }
     } else {
         emailHtml = ''
     }
     // phoneNum
     let phoneNum
-    for (let num of contact.phoneNumbers) { // phone
+    for (let num of contact.phoneNumbers) {
         phoneNum = num.phoneNumber.replace(/\s+/g, '').split('') // remove spaces and create an array
         for (let i = 0; i < phoneNum.length; i++) {
             if (phoneNum[i] === '(' || phoneNum[i] === ')' || phoneNum[i] === '-' || phoneNum[i] === '.') {
@@ -184,7 +191,7 @@ function handleCardContact(contact) {
         }
         phoneNum = formatPhoneNum(phoneNum)
     }
-    let phoneNumHtml = `<p>${phoneNum}</p>`
+    let phoneNumHtml = `<a href="tel:${phoneNum}">${phoneNum}</a>`
     // contactHtml
     let contactHtml = `
         <div class="park-contact">
@@ -291,7 +298,7 @@ async function handleCardAlert(card) {
 function handleCardPara(park) {
     let descTrim = park.description.substring(0,310)
     let descHtml = `
-        <p class="park-para">${descTrim}... <a href="${park.url}" class="para-link">read more.</a></p>`
+        <p class="park-para">${descTrim}... <a href="${park.url}" target="_blank">read more</a></p>`
     return descHtml
 }
 
@@ -381,10 +388,10 @@ function renderDirectoryHeader(state, total) {
     return directoryHeaderHtml
 }
 
+// ${handleCardImg(park.images)}
 function renderParkCard(park) {
     let parkCardHtml = `
     <div class="park-card card-front">
-        ${handleCardImg(park.images)}
         <h4 class="park-name">${park.fullName}</h4>
         <p class="park-lat">LAT: ${park.latitude}</p>
         <p class="park-long">LON: ${park.longitude}</p>
