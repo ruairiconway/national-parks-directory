@@ -532,7 +532,7 @@ function watchForm() {
         e.preventDefault()
         let stateSearch = stateDropdown.value
         // check state dropdown error
-        if (stateSearch === 'none-selected') {
+        if (stateSearch === '') {
             stateDropdown.classList.add('state-dropdown-error')
         } else {
             getParks(stateSearch)
