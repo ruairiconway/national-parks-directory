@@ -11,7 +11,7 @@ Using the National Parks Service API, create a directory that uses state postal 
 ## Highlights
 
 - API Key protected by a proxy using Heroku
-- Users can browse parks by one or more states
+- Users can browse parks by state
 - Users can filter results by number of parks
 - Each result provides the park name, national park service link, and description
 - Uses css grid
